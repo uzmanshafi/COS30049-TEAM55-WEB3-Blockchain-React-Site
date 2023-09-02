@@ -20,7 +20,7 @@ function App() {
       <main>
         <Header />
      
-          <div className="Content  bg-background-color h-screen px-10 py-20">
+          <div className="Content  bg-background-color h-fit w-full px-10 py-20">
             <Routes>
               <Route index element={<Home />} />
               <Route path="about" element={<About />} />
@@ -28,8 +28,9 @@ function App() {
               <Route path="upload" element={<Upload />} />
           </Routes>
           </div>
-          <Footer />
+          <Footer />    
       </main>
+      
     </BrowserRouter>
   );
 }
