@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEthereum } from '@fortawesome/free-brands-svg-icons';
 import { faWallet, faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
-import SearchBar from './components/searchbar.js';
+import SearchBar from './searchbar.js';
+import SearchData from './../searchdata.json'
 import { NavLink } from 'react-router-dom';
 
 const Header = () => {
@@ -49,12 +50,25 @@ const Header = () => {
               <NavLink to={link.link}>{link.name}</NavLink>
             </li>
           ))}
-          <SearchBar />
+
           <button className="btn -my-2 py-1 px-2 md:ml-8 rounded-md border-2 border-black md:static tracking-wide font-semibold">
             <FontAwesomeIcon icon={faWallet} /> Connect Wallet
           </button>
+          <div className="px-4">
+            <SearchBar placeholder="Search.." data={SearchData} />
+          </div>
         </ul>
       </div>
+
+      <div>
+        {/*clearing search bar from header*/}
+        {isOpen && (
+        <div className="fixed top-16 left-0 w-full h-screen bg-white z-50">
+          <SearchBar placeholder="Search.." data={SearchData} />
+        </div>
+        )}
+      </div>
+
     </div>
   );
 };
