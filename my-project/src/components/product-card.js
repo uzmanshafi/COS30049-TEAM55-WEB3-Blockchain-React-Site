@@ -8,7 +8,8 @@ import p4 from '../images/p4.png';
 
 const ProductCard = () => {
   const [productImage, setProductImage] = useState(p1); 
-  const [ethPrice, setEthPrice] = useState(0.5);  // Initialize with a default value
+  const [ethPrice, setEthPrice] = useState(0.5); 
+  const [nftNumber, setNftNumber] = useState(1); 
 
   useEffect(() => {
   
@@ -17,16 +18,20 @@ const ProductCard = () => {
   
     setProductImage(randomImage);
 
-    // Randomize ETH price between 0.5 and 4
+    
     const randomPrice = (Math.random() * (4 - 0.5) + 0.5).toFixed(2);
-  
     setEthPrice(randomPrice);
+
+    // Randomize NFT number between 1 and 1000
+    const randomNumber = Math.floor(Math.random() * 1000) + 1;
+    setNftNumber(randomNumber);
+  
   }, []);
 
   return (
     <div className="bg-primary-color rounded-md h-80 w-64 shadow-lg p-4 flex flex-col justify-between items-center">
       <img className="object-contain h-fit w-full shadow-inner" src={productImage} alt="nft" />
-      <h1 className="text-xl font-bold">NFT #1 PENGUIN</h1>
+      <h1 className="text-xl font-bold">NFT #{nftNumber} PENGUIN</h1>
       <div className="flex justify-between w-full items-center">
         <h2 className="text-lg font-bold tracking-widest flex items-center">
           <FontAwesomeIcon icon={faEthereum} /> {ethPrice} ETH
