@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/free-brands-svg-icons": "^6.4.2",
+    "@fortawesome/free-regular-svg-icons": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -13,8 +17,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "export SETNODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
-    "build": "export SETNODE_OPTIONS=--openssl-legacy-provider && react-scripts build",
+    "start": "set SETNODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
+    "build": "set SETNODE_OPTIONS=--openssl-legacy-provider && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -38,6 +42,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.15",
+    "cross-env": "^7.0.3",
     "postcss": "^8.4.29",
     "postcss-import": "^15.1.0",
     "tailwindcss": "^3.3.3"

@@ -1,24 +1,34 @@
 import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import React from 'react';
-import Header from './components/header'
+import './index.css'
+import { BrowserRouter, Routes, Route, Link, NavLink } from 'react-router-dom'
+//pages
+import Header from './components/navbar'
 import About from './pages/about.js'
 import Home from './pages/home.js'
 import Upload from './pages/submit_product.js'
 import Dashboard from './pages/dashboard.js'
-import Product from './pages/product.js'
-import Footer from './components/footer'
+//icons
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEthereum } from '@fortawesome/free-brands-svg-icons'
+import { faWallet, faBars , faXmark} from '@fortawesome/free-solid-svg-icons'
 
 function App() {
   return (
-    <Router>
-      <Route path="/" component={Home} />
-      <Route path="/about" component={About} />
-      <Route path="/submit_product" component={Upload} />
-      <Route path="/dashboard" component={Dashboard} />
-      <Route path="/product" component={Product} />
-    </Router>
+    <BrowserRouter>
+      <main>
+        <Header />
+     
+          <div className="Content  bg-background-color h-screen px-10 py-20">
+            <Routes>
+              <Route index element={<Home />} />
+              <Route path="about" element={<About />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="upload" element={<Upload />} />
+          </Routes>
+          </div>
+      </main>
+    </BrowserRouter>
   );
 }
 
