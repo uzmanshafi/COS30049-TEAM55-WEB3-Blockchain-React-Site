@@ -6,12 +6,27 @@ import { NavLink } from 'react-router-dom';
 
 const Header = () => {
   const [isOpen, setisOpen] = useState(false);
+  const [isWalletConnected, setWalletConnected] = useState(false);
 
-  const Links = [
+  let Links = [
     { name: 'Home', link: '/' },
-    { name: 'Dashboard', link: '/dashboard' },
     { name: 'Upload', link: '/upload' },
   ];
+
+  if (isWalletConnected) {
+    Links.splice(1, 0, { name: 'Dashboard', link: '/dashboard' });
+  }
+
+  const connectWallet = () => {
+    // Toggle the isWalletConnected state
+    setWalletConnected(!isWalletConnected);
+  };
+
+  const renderWalletAddress = (address) => {
+    const start = address.substring(0, 6);
+    const end = address.substring(address.length - 4);
+    return `${start}...${end}`;
+  };
 
   return (
     <div className="shadow-md w-full bg-primary-color fixed top-0 left-0">
@@ -21,7 +36,7 @@ const Header = () => {
             <FontAwesomeIcon icon={faEthereum} /> Blockchain Trading Platform
           </h1>
         </div>
-
+        
         {/* Mobile Nav */}
         <div
           onClick={() => setisOpen(!isOpen)}
@@ -48,8 +63,14 @@ const Header = () => {
               <NavLink to={link.link}>{link.name}</NavLink>
             </li>
           ))}
-          <button className="btn -my-2 py-1 px-2 md:ml-8 rounded-md border-2 border-black md:static tracking-wide font-semibold">
-            <FontAwesomeIcon icon={faWallet} /> Connect Wallet
+          <button 
+            onClick={connectWallet}
+            className="btn -my-2 py-1 px-2 md:ml-8 rounded-md border-2 border-black md:static tracking-wide font-semibold"
+          >
+            <FontAwesomeIcon icon={faWallet} /> 
+            {isWalletConnected 
+              ? renderWalletAddress(" 0x97b28b82de625e5191d26166ed6368dC8129C179")
+              : " Connect Wallet"}
           </button>
         </ul>
       </div>
