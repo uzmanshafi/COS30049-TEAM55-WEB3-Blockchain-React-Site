@@ -4,6 +4,7 @@ import './index.css'
 import { BrowserRouter, Routes, Route, Link, NavLink } from 'react-router-dom'
 //pages
 import Header from './components/navbar'
+import Footer from './components/footer'
 import About from './pages/about.js'
 import Home from './pages/home.js'
 import Upload from './pages/submit_product.js'
@@ -27,6 +28,7 @@ function App() {
               <Route path="upload" element={<Upload />} />
           </Routes>
           </div>
+          <Footer />
       </main>
     </BrowserRouter>
   );
