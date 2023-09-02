@@ -3,7 +3,7 @@ import './App.css';
 import './index.css'
 import { BrowserRouter, Routes, Route, Link, NavLink } from 'react-router-dom'
 //pages
-import Header from './components/navbar'
+import Header from './components/navbar.js'
 import About from './pages/about.js'
 import Home from './pages/home.js'
 import Upload from './pages/submit_product.js'
