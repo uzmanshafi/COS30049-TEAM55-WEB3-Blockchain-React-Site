@@ -8,6 +8,7 @@ import About from './pages/about.js'
 import Home from './pages/home.js'
 import Upload from './pages/submit_product.js'
 import Dashboard from './pages/dashboard.js'
+import SearchBar from './components/searchbar.js';
 //icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEthereum } from '@fortawesome/free-brands-svg-icons'
@@ -20,6 +21,7 @@ function App() {
         <Header />
      
           <div className="Content  bg-background-color h-screen px-10 py-20">
+            <SearchBar />
             <Routes>
               <Route index element={<Home />} />
               <Route path="about" element={<About />} />

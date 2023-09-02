@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEthereum } from '@fortawesome/free-brands-svg-icons';
 import { faWallet, faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
-import SearchBar from './components/searchbar.js'
+import SearchBar from './components/searchbar.js';
 import { NavLink } from 'react-router-dom';
 
 const Header = () => {
