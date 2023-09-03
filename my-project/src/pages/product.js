@@ -14,7 +14,7 @@ const Product = () => {
             </h1>
             <br></br>
             <div className='grid grid-rows-5 grid-flow-col gap-4 px-20'>
-                <div className='row-start-1 p-7 col-span-2 bg-primary-color rounded-md text-center col-start-1 col-span-2 flex flex-col'>
+                <div className='row-start-1 p-7 col-span-2 bg-primary-color rounded-md text-center col-start-1 col-span-2 flex flex-col h-auto'>
 
                     <div className='grid grid-rows-4 grid-flow-col gap-2 px-10 text-center'>
                         <div className='col-start-1 col-span-4 space-y-4 pb-8 mx-auto flex flex-col items-center'>
@@ -31,7 +31,7 @@ const Product = () => {
                         <div className='col-start-3 mx-auto space-y-5'>
                             <p>ITEMS SOLD</p>
                             <p className='font-bold text-2xl'>4</p>
-                            <button className='bg-purple p-2 w-full rounded-full shadow-lg font-bold mt-auto text-white' to="/">ADD TO CART</button>
+                            <button className='bg-cartbutton p-2 w-full rounded-full shadow-lg font-bold mt-auto text-white' to="/">ADD TO CART</button>
                         </div>
                     </div>
                 </div>
@@ -39,7 +39,7 @@ const Product = () => {
 
 
 
-                <div className='row-start-1 p-7  row-span-1 bg-primary-color rounded-md col-end-8 col-span-4'>
+                <div className='row-start-1 p-7 row-span-1 bg-primary-color rounded-md col-end-8 col-span-4 h-auto'>
                   <h2 className='font-bold'>DESCRIPTION</h2>
                   <p className="text-black">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ac nisl a elit tincidunt posuere id at velit. Aliquam ultricies, risus et ornare bibendum, libero ipsum ullamcorper purus, at faucibus lorem orci nec sapien. Quisque accumsan, arcu ac fermentum efficitur, velit urna bibendum tortor, sit amet porttitor arcu dolor quis nibh. Praesent sit amet faucibus sapien. Fusce efficitur feugiat ullamcorper. Etiam elit sapien, hendrerit quis ex nec, laoreet eleifend metus. Integer non vehicula nisi.</p>
                   <br></br>
