@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import homeImage from '../images/home-image1.png';
 import ProductCard from '../components/product-card';
+import { NavLink } from 'react-router-dom';
+
 
 const Home = () => {
   const numProducts = 10;
@@ -35,9 +37,9 @@ const Home = () => {
                         <img src={homeImage} alt="home image" className="object-contain w-6/12 md:w-6/12" />
                     </div>
                     <div className="flex flex-col justify-end items-center md:self-end shadow-md">
-                        <button className="bg-secondary-color w-32 h-10 rounded-md font-bold text-white">
+                        <NavLink className="bg-secondary-color w-32 h-10 rounded-md font-bold text-white" to="product">
                             BUY NOW
-                        </button>
+                        </NavLink>
                     </div>
                 </div>
             </div>
