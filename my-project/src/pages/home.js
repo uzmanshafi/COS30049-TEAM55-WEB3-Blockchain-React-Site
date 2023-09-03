@@ -1,25 +1,24 @@
 import React, { useState } from 'react';
 import homeImage from '../images/home-image1.png';
 import ProductCard from '../components/product-card';
+import productData from '../Dataset/data'; 
 
 const Home = () => {
-  const numProducts = 10;
-  const [activeTab, setActiveTab] = useState("Trending");
-
-    const productArray = Array.from({ length: numProducts }, (_, index) => index);
-
+    const [activeTab, setActiveTab] = useState("Trending");
+  
     const getRandomProducts = (num = 5) => {
-        const randomProducts = [];
-        while (randomProducts.length < num) {
-            const rand = Math.floor(Math.random() * numProducts);
-            if (!randomProducts.includes(rand)) {
-                randomProducts.push(rand);
-            }
+      const allProducts = productData; // Your actual product data
+      const randomProducts = [];
+      while (randomProducts.length < num) {
+        const rand = Math.floor(Math.random() * allProducts.length);
+        if (!randomProducts.includes(allProducts[rand])) {
+          randomProducts.push(allProducts[rand]);
         }
-        return randomProducts;
+      }
+      return randomProducts;
     };
-
-    const displayProducts = activeTab === "Trending" ? productArray : getRandomProducts();
+  
+    const displayProducts = activeTab === "Trending" ? productData : getRandomProducts();
 
     return (
         <div className="grid grid-rows-[auto,1fr]">
@@ -57,9 +56,9 @@ const Home = () => {
                     </button>
                 </div>
                 <div className="p-4 md:p-12 flex flex-wrap justify-center items-start">
-                    {displayProducts.map((_, index) => (
-                        <div className="m-2 md:m-4" key={index}>
-                            <ProductCard />
+                    {displayProducts.map((product, index) => (
+                        <div className="m-2 md:m-4" key={product.id}>
+                            <ProductCard product={product} />
                         </div>
                     ))}
                 </div>
