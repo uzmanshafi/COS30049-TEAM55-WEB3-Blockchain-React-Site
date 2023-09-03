@@ -47,6 +47,7 @@ const Dashboard = () => {
                             {renderWalletAddress('0xae2Fc483527B8EF99EB5D9B44875F005ba1FaE13')}
                             <FontAwesomeIcon icon={faClipboard} className="hover:cursor-pointer" />
                         </h2>
+                        <h2 className='text-4xl font-bold my-3'> <FontAwesomeIcon icon={faEthereum} className='mr-2' /> 4 ETH </h2>
                         <div className="flex flex-row mx-2">
                             <div className="text-center p-2">
                                 <h2 className="font-semibold text-xs md:text-base">Current Listing</h2>
@@ -57,7 +58,7 @@ const Dashboard = () => {
                                 <h1 className="font-bold text-md md:text-xl">4</h1>
                             </div>
                         </div>
-                        <div className="flex flex-col md:flex-row mx-2">
+                        <div className="flex flex-col md:flex-row mx-2 my-4">
                             <button className="bg-secondary-color p-2 rounded-full font-semibold text-white shadow-md mb-2 md:mb-0">DEPOSIT ETH</button>
                             <button className="bg-indigo-700 p-2 rounded-full font-semibold text-white shadow-md mt-2 md:mt-0 md:ml-4">WITHDRAW ETH</button>
                         </div>

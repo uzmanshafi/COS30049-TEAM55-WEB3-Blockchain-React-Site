@@ -9,6 +9,8 @@ import About from './pages/about.js'
 import Home from './pages/home.js'
 import Upload from './pages/submit_product.js'
 import Dashboard from './pages/dashboard.js'
+import SearchProduct from './pages/search_product';
+import Error404 from './pages/404';
 //icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEthereum } from '@fortawesome/free-brands-svg-icons'
@@ -24,7 +26,9 @@ function App() {
             <Route index element={<Home />} />
             <Route path="about" element={<About />} />
             <Route path="dashboard" element={<Dashboard />} />
-            <Route path="upload" element={<Upload />} />
+            <Route path="submit_product" element={<Upload />} />
+            <Route path="search_product" element={<SearchProduct />} />
+            <Route path="*" element={<Error404 />} />
           </Routes>
         </div>
         <Footer />
