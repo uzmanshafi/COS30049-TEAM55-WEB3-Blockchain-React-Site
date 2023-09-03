@@ -70,7 +70,7 @@ const Header = () => {
           >
             <FontAwesomeIcon icon={faWallet} />
             {isWalletConnected
-              ? renderWalletAddress('0x97b28b82de625e5191d26166ed6368dC8129C179')
+              ? renderWalletAddress('0xae2Fc483527B8EF99EB5D9B44875F005ba1FaE13')
               : ' Connect Wallet'}
           </button>
         </ul>
