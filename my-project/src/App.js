@@ -17,20 +17,18 @@ import { faWallet, faBars , faXmark} from '@fortawesome/free-solid-svg-icons'
 function App() {
   return (
     <BrowserRouter>
-      <main>
+      <main className="min-h-screen flex flex-col">
         <Header />
-     
-          <div className="Content  bg-background-color h-fit w-full px-10 py-20">
-            <Routes>
-              <Route index element={<Home />} />
-              <Route path="about" element={<About />} />
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="upload" element={<Upload />} />
+        <div className="Content bg-background-color flex-grow w-full px-10 py-20">
+          <Routes>
+            <Route index element={<Home />} />
+            <Route path="about" element={<About />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="upload" element={<Upload />} />
           </Routes>
-          </div>
-          <Footer />    
+        </div>
+        <Footer />
       </main>
-      
     </BrowserRouter>
   );
 }
