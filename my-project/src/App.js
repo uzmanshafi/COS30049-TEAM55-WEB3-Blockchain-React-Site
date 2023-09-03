@@ -9,6 +9,7 @@ import About from './pages/about.js'
 import Home from './pages/home.js'
 import Upload from './pages/submit_product.js'
 import Dashboard from './pages/dashboard.js'
+import Product from './pages/product';
 //icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEthereum } from '@fortawesome/free-brands-svg-icons'
@@ -25,6 +26,7 @@ function App() {
             <Route path="about" element={<About />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="upload" element={<Upload />} />
+            <Route path="product" element={<Product />} />
           </Routes>
         </div>
         <Footer />
