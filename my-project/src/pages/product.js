@@ -2,21 +2,20 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUpload } from '@fortawesome/free-brands-svg-icons'
 import product from '../components/product-card';
+import p1 from '../images/p1.png';
+import p2 from '../images/p2.png';
+import p3 from '../images/p3.png';
+import p4 from '../images/p4.png';
 
 const Product = ({ productImage, productName, ethPrice, currentSupply, itemsSold, description }) => {
     return (
-        <div className="p-50 flex">
+        <div className="h-96 flex">
             {/* Left Box */}
             <div className="bg-primary-color p-6 w-1/2">
-                <div className="rounded-md bg-white p-6 h-full">
-                    <div className="bg-white w-24 h-24 rounded-full"></div>
-                    {/* White box above the product name */}
-                    <div className="bg-white h-12 w-full mb-4 rounded-full">
-                        {/* Add content here, if needed */}
-                    </div>
-                    <img className="object-contain h-fit w-full" src={productImage} alt={productName} />
+            <div className="border-black border-2 rounded-md">
+      <img className="object-contain h-fit w-full" src={productImage} alt={productName} /> </div>
                     <h1 className="text-2xl font-bold mt-4">{productName}</h1>
-                    <h2 className="text-lg font-bold mt-2">
+                    <h2 className="text-lg font-bold mt-30">
                         {ethPrice} ETH
                     </h2>
                     <div className="flex mt-4">
@@ -37,7 +36,7 @@ const Product = ({ productImage, productName, ethPrice, currentSupply, itemsSold
                             </button>
                         </div>
                     </div>
-                </div>
+                
             </div>
             
             {/* Right Box */}
