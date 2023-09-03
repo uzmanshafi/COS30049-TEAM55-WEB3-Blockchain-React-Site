@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import homeImage from '../images/home-image1.png';
 import ProductCard from '../components/product-card';
 import productData from '../Dataset/data'; 
+import { NavLink } from 'react-router-dom';
 
 const Home = () => {
     const [activeTab, setActiveTab] = useState("Trending");

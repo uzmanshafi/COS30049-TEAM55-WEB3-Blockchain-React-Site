@@ -5,9 +5,18 @@ import p1 from '../images/p1.png';
 import p2 from '../images/p2.png';
 import p3 from '../images/p3.png';
 import p4 from '../images/p4.png';
+import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
+
 
 const ProductCard = ({ product }) => {
   const { id, typeOfProduct, image, ethPrice, nftNumber } = product;
+  const navigate = useNavigate();
+
+  const goToProductPage = () => {
+    navigate(`/product/${id}`);
+  };
 
   // Here we map the string image name to the imported image variables
   const imageMap = {
@@ -26,9 +35,13 @@ const ProductCard = ({ product }) => {
         <h2 className="text-lg font-bold tracking-widest flex items-center">
           <FontAwesomeIcon icon={faEthereum} /> {ethPrice} ETH
         </h2>
-        <button className="bg-secondary-color py-2 px-4 rounded-md shadow-md font-bold tracking-wider text-white border-2 border-white">
+        <button
+          onClick={goToProductPage}
+          className="bg-secondary-color py-2 px-4 rounded-md shadow-md font-bold tracking-wider text-white border-2 border-white"
+        >
           BUY NOW
         </button>
+
       </div>
     </div>
   );
