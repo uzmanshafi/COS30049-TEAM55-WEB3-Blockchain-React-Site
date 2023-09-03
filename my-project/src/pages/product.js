@@ -16,7 +16,7 @@ const Product = () => {
             <div className='grid grid-rows-5 grid-flow-col gap-4 px-20'>
                 <div className='row-start-1 p-7 col-span-2 bg-primary-color rounded-md text-center col-start-1 col-span-2 flex flex-col h-auto'>
 
-                    <div className='grid grid-rows-4 grid-flow-col gap-2 px-10 text-center'>
+                    <div className='grid gap-2 px-10 text-center'>
                         <div className='col-start-1 col-span-4 space-y-4 pb-8 mx-auto flex flex-col items-center'>
                             <img src={p1} alt="home image" className="object-contain w-6/12 md:w-6/12 rounded-full" />
                             <h1 className='font-bold text-2xl'>PRODUCT NAME</h1>
