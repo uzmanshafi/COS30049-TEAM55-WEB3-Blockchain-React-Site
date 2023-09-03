@@ -15,7 +15,7 @@ const ProductCard = ({ product }) => {
   const navigate = useNavigate();
 
   const goToProductPage = () => {
-    navigate(`/product/${id}`);
+    navigate('/product');
   };
 
   // Here we map the string image name to the imported image variables
