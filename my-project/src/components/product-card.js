@@ -1,47 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEthereum } from '@fortawesome/free-brands-svg-icons';
-import p1 from '../images/p1.png';
-import p2 from '../images/p2.png';
-import p3 from '../images/p3.png';
-import p4 from '../images/p4.png';
 
-const ProductCard = () => {
-  const [productImage, setProductImage] = useState(p1); 
-  const [ethPrice, setEthPrice] = useState(0.5); 
-  const [nftNumber, setNftNumber] = useState(1); 
-
-  useEffect(() => {
-  
-    const images = [p1, p2, p3, p4];
-    const randomImage = images[Math.floor(Math.random() * images.length)];
-  
-    setProductImage(randomImage);
-
-    
-    const randomPrice = (Math.random() * (4 - 0.5) + 0.5).toFixed(2);
-    setEthPrice(randomPrice);
-
-    // Randomize NFT number between 1 and 1000
-    const randomNumber = Math.floor(Math.random() * 1000) + 1;
-    setNftNumber(randomNumber);
-  
-  }, []);
-
+const Product = ({ productImage, ethPrice, nftNumber, supply, sold }) => {
   return (
-    <div className="bg-primary-color rounded-md h-80 w-64 shadow-lg p-4 flex flex-col justify-between items-center">
-      <img className="object-contain h-fit w-full shadow-inner" src={productImage} alt="nft" />
-      <h1 className="text-xl font-bold">NFT #{nftNumber} PENGUIN</h1>
-      <div className="flex justify-between w-full items-center">
+    <div className="flex justify-between">
+      <div className="bg-white rounded-md p-4">
+        <img className="object-contain h-48 w-full mb-2" src={productImage} alt="product" />
+        <h1 className="text-xl font-bold">NFT #{nftNumber} PENGUIN</h1>
         <h2 className="text-lg font-bold tracking-widest flex items-center">
           <FontAwesomeIcon icon={faEthereum} /> {ethPrice} ETH
         </h2>
-        <button className="bg-secondary-color py-2 px-4 rounded-md shadow-md font-bold tracking-wider text-white border-2 border-white">
-          BUY NOW
-        </button>
+        <div className="flex justify-between mt-2">
+          <button className="bg-blue-500 text-white py-1 px-4 rounded-full">
+            Buy Now <span className="text-xs bg-white p-1 rounded-full">{supply}</span>
+          </button>
+          <button className="bg-green-500 text-white py-1 px-4 rounded-full">
+            Add To Cart <span className="text-xs bg-white p-1 rounded-full">{sold}</span>
+          </button>
+        </div>
+      </div>
+      <div className="bg-gray-200 rounded-md p-4 w-2/3">
+        <h1 className="text-primary-color font-bold italic text-2xl">Product Description</h1>
+        <p className="text-primary-color mb-4">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit...
+        </p>
+        <div className="bg-white rounded-md p-4">
+          Transaction Activity Here
+        </div>
       </div>
     </div>
   );
 };
-
-export default ProductCard;
