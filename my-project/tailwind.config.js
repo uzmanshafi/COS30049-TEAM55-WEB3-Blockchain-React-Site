@@ -11,6 +11,8 @@ module.exports = {
       'secondary-color': '#08b113',
       'text-color': '#fcf8d9',
       'accent-color': '#262626',
+      'black': '#070708',
+      'purple': '#8f42c7',
     },
     extend: {},
   },
