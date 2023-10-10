@@ -1,56 +1,62 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUpload } from '@fortawesome/free-brands-svg-icons'
-import product from '../components/product-card';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowsTurnToDots } from '@fortawesome/free-solid-svg-icons';
+import { faBitcoin, faEthereum } from '@fortawesome/free-brands-svg-icons';
 import p1 from '../images/p1.png';
-import p2 from '../images/p2.png';
-import p3 from '../images/p3.png';
-import p4 from '../images/p4.png';
 
-const Product = ({ productImage, productName, ethPrice, currentSupply, itemsSold, description }) => {
+const Product = () => {
     return (
-        <div className="h-96 flex">
-            {/* Left Box */}
-            <div className="bg-primary-color p-6 w-1/2">
-            <div className="border-black border-2 rounded-md">
-      <img className="object-contain h-fit w-full" src={productImage} alt={productName} /> </div>
-                    <h1 className="text-2xl font-bold mt-4">{productName}</h1>
-                    <h2 className="text-lg font-bold mt-30">
-                        {ethPrice} ETH
-                    </h2>
-                    <div className="flex mt-4">
-                        <div>
-                            <div className="bg-gray-200 p-2 mb-2 text-center rounded">
-                                Current Supply:3000 <strong>{currentSupply}</strong>
-                            </div>
-                            <button className="bg-secondary-color py-2 px-4 rounded-md shadow-md font-bold text-white">
-                                Buy Now
-                            </button>
-                        </div>
-                        <div className="ml-auto">
-                            <div className="bg-gray-200 p-2 mb-2 text-center rounded">
-                                Items Sold: 130 <strong>{itemsSold}</strong>
-                            </div>
-                            <button className="bg-secondary-color py-2 px-4 rounded-md shadow-md font-bold text-white">
-                                Add To Cart
-                            </button>
-                        </div>
+        <div className="mx-4 md:mx-20 px-4 md:px-20">
+            <h1 className="text-primary-color font-bold italic text-2xl pt-8 text-center">
+                PRODUCT
+            </h1>
+            <div className="grid grid-cols-1 md:grid-cols-6 gap-4 px-4 md:px-20">
+                <div className="col-span-6 md:col-span-2 p-4 md:p-7 bg-primary-color rounded-md text-center">
+                    <div className="space-y-4 pb-8 flex flex-col items-center">
+                        <img src={p1} alt="home image" className="object-contain w-6/12 md:w-6/12 rounded-full" />
+                        <h1 className="font-bold text-2xl">PRODUCT NAME</h1>
+                        <h2 className="text-2xl">CATEGORY</h2>
+                        <h1 className="text-2xl font-bold"><FontAwesomeIcon icon={faEthereum} /> 4ETH</h1>
                     </div>
-                
-            </div>
-            
-            {/* Right Box */}
-            <div className="bg-secondary-color p-6 w-1/2">
-                <div className="rounded-md bg-white p-6 h-full">
-                    {/* White box above the content name */}
-                    <div className="bg-white h-12 w-full mb-4 rounded-full">
-                        {/* Add content here, if needed */}
+                    
+                    <div className="space-y-5 mt-5">
+                        <p>ITEMS SOLD</p>
+                        <p className="font-bold text-2xl">4</p>
+                        <div className="space-y-5">
+                        <p>CURRENT SUPPLY</p>
+                        <p className="font-bold text-2xl">1000</p>
+                        <button className="bg-purple-600 p-2 w-full rounded-full shadow-lg font-bold mt-auto text-white">
+                            ADD TO CART
+                        </button>
+                        
+                        <button className="bg-secondary-color p-2 w-full rounded-full shadow-lg font-bold mt-auto text-white">
+                            BUY NOW
+                        </button>
                     </div>
-                    <h1 className="text-2xl font-bold">Description</h1>
-                    <p className="mt-2">{description}</p>
-                    <div className="mt-4 bg-gray-200 p-4">
-                        <h2 className="text-xl font-bold">Transaction Activity</h2>
-                        {/* Add your transaction activity here */}
+                    </div>
+                </div>
+                <div className="col-span-6 md:col-span-4 p-4 md:p-7 bg-primary-color rounded-md">
+                    <h2 className="font-bold">DESCRIPTION</h2>
+                    <p className="text-black">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ac nisl a elit tincidunt posuere id at velit. Aliquam ultricies, risus et ornare bibendum, libero ipsum ullamcorper purus, at faucibus lorem orci nec sapien. Quisque accumsan, arcu ac fermentum efficitur, velit urna bibendum tortor, sit amet porttitor arcu dolor quis nibh. Praesent sit amet faucibus sapien. Fusce efficitur feugiat ullamcorper. Etiam elit sapien, hendrerit quis ex nec, laoreet eleifend metus. Integer non vehicula nisi.</p>
+                    <br></br>
+                    <div className="bg-secondary-color text-white rounded-lg p-4 w-full md:w-2/3 mt-4">
+                        <h3 className="text-white font-bold">
+                            TRANSACTION ACTIVITY <FontAwesomeIcon icon={faBitcoin} />
+                        </h3>
+                        <div className='w-full p-2'>
+                            <span>Transfer</span> <span><FontAwesomeIcon icon={faArrowsTurnToDots} /></span> <span className='Sender'>0x00000</span> <span>to</span> <span className='Receiver'>0xc121332</span>
+                        </div>
+                        <div className='w-full p-2'>
+                            <span>Transfer</span> <span><FontAwesomeIcon icon={faArrowsTurnToDots} /></span> <span className='Sender'>0x00000</span> <span>to</span> <span className='Receiver'>0xc121332</span>
+                        </div>
+                        <div className='w-full p-2'>
+                            <span>Transfer</span> <span><FontAwesomeIcon icon={faArrowsTurnToDots} /></span> <span className='Sender'>0x00000</span> <span>to</span> <span className='Receiver'>0xc121332</span>
+                        </div>
+                        <div className='w-full p-2'>
+                            <span>Transfer</span> <span><FontAwesomeIcon icon={faArrowsTurnToDots} /></span> <span className='Sender'>0x00000</span> <span>to</span> <span className='Receiver'>0xc121332</span>
+                        </div>  <div className='w-full p-2'>
+                            <span>Transfer</span> <span><FontAwesomeIcon icon={faArrowsTurnToDots} /></span> <span className='Sender'>0x00000</span> <span>to</span> <span className='Receiver'>0xc121332</span>
+                        </div>
                     </div>
                 </div>
             </div>
