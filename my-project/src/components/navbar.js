@@ -14,8 +14,6 @@ const Header = () => {
 
   const navigate = useNavigate();
 
-  const navigate = useNavigate(); // useHistory is replaced by useNavigate
-
   let Links = [
     { name: 'Home', link: '/' },
     { name: 'Upload', link: '/submit_product' },
@@ -74,27 +72,6 @@ const Header = () => {
     const start = address.substring(0, 6);
     const end = address.substring(address.length - 4);
     return ` ${start}...${end}`;
-  };
-
-  let allPages = [
-    ...Links,
-    { name: 'About', link: '/about' },
-    { name: 'Product', link: '/product' },
-    { name: 'Search Product', link: '/search_product' },
-    { name: 'Submit Product', link: '/submit_product' },
-    { name: 'Dashboard', link: '/dashboard' },
-  ];
-
-  const performSearch = (query) => {
-    const matchedPage = allPages.find((page) =>
-      page.name.toLowerCase().includes(query.toLowerCase())
-    );
-
-    if (matchedPage) {
-      navigate(matchedPage.link);
-    } else {
-      console.log('Page not found');
-    }
   };
 
   let allPages = [
