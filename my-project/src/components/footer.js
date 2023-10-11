@@ -15,10 +15,13 @@ const Footer = () => {
                     <NavLink to="/" className="mr-4 hover:underline md:mr-6 text-primary-color">Home</NavLink>
                 </li>
                 <li>
-                    <NavLink to="/submit_product" className="mr-4 hover:underline md:mr-6 text-primary-color">Submit</NavLink>
+                    <NavLink to="/upload" className="mr-4 hover:underline md:mr-6 text-primary-color">Submit</NavLink>
                 </li>
                 <li>
-                    <NavLink to="/search_product" className="hover:underline text-primary-color">Search Product</NavLink>
+                    <NavLink to="/product" className="hover:underline md:mr-6 text-primary-color">Product</NavLink>
+                </li>
+                <li>
+                    <NavLink to="/login" className="hover:underline text-primary-color">Login</NavLink>
                 </li>
             </ul>
         </footer>
