@@ -8,29 +8,29 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(email);
-
     }
 
     return (
-            <div className="flex items-center justify-center">
-                <div className='m-20 p-8 bg-primary-color rounded-lg w-80'>
-                    
-                    <h1 className='text-primary font-bold italic text-2xl pb-3'>Login</h1>
+        <div className="flex items-center justify-center min-h-screen ">
+            <div className='p-8 bg-primary-color rounded-lg shadow-md w-full max-w-md text-center'>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="flex flex-col space-y-2">
+                        <label htmlFor='email' className="text-left text-accent-color font-bold">Email</label>
+                        <input className="p-2 border rounded" value={email} onChange={(e) => setEmail(e.target.value)} type='email' name='email' placeholder='youremail@gmail.com' />
+                    </div>
 
-                    <form onSubmit={handleSubmit} className="">
-                        <label htmlFor='email' className="text-primary font-bold mr-6">Email</label>
-                        <input className="mb-2" value={email} onChange={(e) => setEmail(e.target.value)} type='email' name='email' placeholder='youremail@gmail.com'/>
-                        <br></br>
-                        <label htmlFor='password' className="text-primary font-bold mr-6">Password</label>
-                        <input className="" value={pass} onChange={(e) => setPass(e.target.value)} type='password' name='password' placeholder='********'/>
+                    <div className="flex flex-col space-y-2">
+                        <label htmlFor='password' className="text-left text-accent-color font-bold">Password</label>
+                        <input className="p-2 border rounded" value={pass} onChange={(e) => setPass(e.target.value)} type='password' name='password' placeholder='********' />
+                    </div>
 
-                        <button type="submit" className='bg-secondary-color p-2 w-20 rounded-md shadow-lg font-bold italic my-4'>Log In</button>
-                    </form>
-                    <button>
-                        <NavLink className='italic' to="/register">Don't have an account? Register here.</NavLink>
-                    </button>
+                    <button type="submit" className='w-full bg-secondary-color uppercase text-white p-2 rounded-md shadow-md font-bold italic hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-200'>Log In</button>
+                </form>
+                <div className="mt-4">
+                    <NavLink className='text-accent-color text-sm font-bold' to="/register">Don't have an account? Register here.</NavLink>
                 </div>
             </div>
+        </div>
     );
 };
 
