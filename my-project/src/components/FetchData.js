@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEthereum } from '@fortawesome/free-brands-svg-icons';
 import { useNavigate } from 'react-router-dom';
 
-function ProductCard({ product }) {
+function FetchData() {
     const [records, setRecords] = useState([])
     const navigate = useNavigate();
     const goToProductPage = () => {
@@ -43,4 +43,4 @@ function ProductCard({ product }) {
     )
 }
 
-export default ProductCard;
+export default FetchData;

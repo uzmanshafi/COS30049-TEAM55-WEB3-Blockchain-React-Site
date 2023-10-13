@@ -8,10 +8,12 @@ import SearchBar from './searchbar';
 const Header = () => {
     const [isOpen, setisOpen] = useState(false);
     const navigate = useNavigate();
+    const isLoggedIn = localStorage.getItem("emailData") && localStorage.getItem("passwordData");
+    const userEmail = localStorage.getItem("emailData");
 
     let Links = [
         { name: 'Home', link: '/' },
-        { name: 'Upload', link: '/submit_product' },
+        { name: 'Upload', link: '/upload' },
     ];
 
     let allPages = [
@@ -70,12 +72,26 @@ const Header = () => {
             <li className="font-semibold my-7 mx-4 md:my-0 md:ml-8 tracking-wider">
                 <SearchBar onSearch={performSearch} />
             </li>
-            <button
-                onClick={() => navigate("/login")}
-                className="btn -my-2 py-1 px-2 md:ml-8 rounded-md border-2 border-black md:static tracking-wide font-semibold"
-            >
-                Login Here
-            </button>
+            {isLoggedIn ? (
+                <>
+                    <li>{userEmail}</li>
+                    <button
+                        onClick={() => {
+                            localStorage.removeItem("emailData");
+                            localStorage.removeItem("passwordData");
+                        } }
+                        className="btn -my-2 py-1 px-2 md:ml-8 rounded-md border-2 border-black md:static tracking-wide font-semibold"
+                    >
+                         Logout
+                    </button></>
+            ) : (
+                <button
+                    onClick={() => navigate("/login")}
+                    className="btn -my-2 py-1 px-2 md:ml-8 rounded-md border-2 border-black md:static tracking-wide font-semibold"
+                >
+                    Login
+                </button>
+            )}
             </ul>
         </div>
         </div>

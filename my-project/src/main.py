@@ -49,6 +49,20 @@ async def get_users():
     
     return users
 
+@app.get("/products/")
+async def get_products():
+    connection, cursor = get_db_cursor()
+    
+    try:
+        cursor.execute("SELECT * FROM Products")
+        products = cursor.fetchall()
+    except mysql.connector.Error as err:
+        raise HTTPException(status_code=500, detail="Database error")
+    finally:
+        close_db_cursor(cursor, connection)
+    
+    return products
+
 @app.post("/users/save_wallet_address/")
 async def save_wallet_address(address: str):
     connection, cursor = get_db_cursor()

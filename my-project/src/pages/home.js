@@ -1,25 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import homeImage from '../images/home-image1.png';
 import ProductCard from '../components/product-card';
-import productData from '../Dataset/data'; 
 import { NavLink } from 'react-router-dom';
+import axios from 'axios'
 
 const Home = () => {
     const [activeTab, setActiveTab] = useState("Trending");
+    const [productData, setProductData] = useState([]);
   
-    const getRandomProducts = (num = 5) => {
-      const allProducts = productData; // Your actual product data
-      const randomProducts = [];
-      while (randomProducts.length < num) {
-        const rand = Math.floor(Math.random() * allProducts.length);
-        if (!randomProducts.includes(allProducts[rand])) {
-          randomProducts.push(allProducts[rand]);
-        }
-      }
-      return randomProducts;
-    };
+    useEffect(() => {
+      // Fetch product data from your API endpoint
+      axios.get('http://127.0.0.1:8000/products/')
+        .then((res) => {
+          setProductData(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }, []);
+
+    const getTrendingProducts = () => {
+        return productData.filter((product) => product.isTrending == 1);
+      };
   
-    const displayProducts = activeTab === "Trending" ? productData : getRandomProducts();
+    const displayProducts = activeTab === "Trending" ? getTrendingProducts() : productData;
 
     return (
         <div className="grid grid-rows-[auto,1fr]">
@@ -58,8 +62,8 @@ const Home = () => {
                 </div>
                 <div className="p-4 md:p-12 flex flex-wrap justify-center items-start">
                     {displayProducts.map((product, index) => (
-                        <div className="m-2 md:m-4" key={product.id}>
-                            <ProductCard product={product} />
+                        <div className="m-2 md:m-4" key={product.item_id}>
+                            <ProductCard />
                         </div>
                     ))}
                 </div>
