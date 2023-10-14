@@ -11,7 +11,6 @@ import Upload from './pages/submit_product.js'
 import Dashboard from './pages/dashboard.js'
 import Product from './pages/product.js'
 import Login from './pages/login.js'
-import Register from './pages/register.js'
 import FetchData from './components/FetchData.js'
 //icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -31,7 +30,6 @@ function App() {
             <Route path="upload" element={<Upload />} />
             <Route path="product" element={<Product />} />
             <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
             <Route path ="fetchdata" element={<FetchData />}/>
           </Routes>
         </div>

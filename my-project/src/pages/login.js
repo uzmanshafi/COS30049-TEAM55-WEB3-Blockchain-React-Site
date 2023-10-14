@@ -33,9 +33,6 @@ const Login = () => {
                     </div>
 
                 </form>
-                <div className="mt-4">
-                    <NavLink className='text-accent-color text-sm font-bold' to="/register">Don't have an account? Register here.</NavLink>
-                </div>
             </div>
         </div>
     );
