@@ -38,7 +38,7 @@ const Header = () => {
     };
 
     return (
-        <div className="shadow-md w-full bg-primary-color fixed top-0 left-0">
+        <div className="shadow-md w-full bg-primary-color fixed top-0 left-0 z-10">
         <div className="p-4 md:flex justify-between items-center bg-primary-color">
             <div className="flex items-center gap-1">
             <h1 className="text-sm md:text-md lg:text-xl uppercase font-bold tracking-widest">

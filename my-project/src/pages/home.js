@@ -45,7 +45,7 @@ const Home = () => {
           </button>
 
         </div>
-        <FetchData tab={activeTab} /> {/* Pass the activeTab as prop */}
+        <FetchData tab={activeTab} />
       </div>
     </div>
   );
