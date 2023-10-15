@@ -11,12 +11,14 @@ import axios from 'axios';
 
 const Dashboard = () => {
     const [user, setUser] = useState(null);
+    const user_id = localStorage.getItem('userId');
+    const [transactions, setTransactions] = useState([]);
 
     useEffect(() => {
-        const session_id = localStorage.getItem('session_id'); // Get session_id from local storage
+        const session_id = localStorage.getItem('session_id'); // Gets session_id from local storage
 
         if (session_id && (!user || (user && user.email === "Loading..."))) {
-            axios.get(`http://127.0.0.1:8000/users/details/`, { headers: { "Authorization": `Bearer ${session_id}` } })
+            axios.get(`http://127.0.0.1:8000/user/${user_id}/`, { headers: { "Authorization": `Bearer ${session_id}` } })
                 .then(response => {
                     setUser(response.data);
                 })
@@ -24,25 +26,21 @@ const Dashboard = () => {
                     console.error("Error fetching user details:", error);
                 });
         }
+
+        // Fetches user transactions
+        if (user && user.user_id) {
+            axios.get(`http://127.0.0.1:8000/transactions/${user.user_id}/`)
+                .then(response => {
+                    setTransactions(response.data);
+                })
+                .catch(error => {
+                    console.error("Error fetching transactions:", error);
+                });
+        }
+
     }, [user]);
-    
-
-    const generateRandomData = (n) => {
-        const productNames = Array.from({ length: n }, (_, i) => `NFT #${Math.floor(Math.random() * 1000 + 1)} Penguin`);
-        const previousOwners = Array.from({ length: n }, (_, i) => `Owner #${Math.floor(Math.random() * 1000 + 1)}`);
-        const purchasedDates = Array.from({ length: n }, (_, i) => `${Math.floor(Math.random() * 31 + 1)} - ${["jan", "feb", "mar", "apr", "may"][Math.floor(Math.random() * 5)]} - 2023`);
-        const categories = Array.from({ length: n }, (_, i) => ["Games", "Entertainment", "Art", "Membership"][Math.floor(Math.random() * 4)]);
-        const images = Array.from({ length: n }, (_, i) => [p1, p2, p3, p4][Math.floor(Math.random() * 4)]);
-        const prices = Array.from({ length: n }, (_, i) => (Math.random() * 3.5 + 0.5).toFixed(2));
-
-        return { productNames, previousOwners, purchasedDates, categories, images, prices };
-    };
-
-    const randomData = generateRandomData(5);
 
     const [currentTab, setCurrentTab] = useState("Purchased");
-
-    const listedData = generateRandomData(2);
 
     return (
         <div className="flex flex-col md:flex-row m-4 md:m-12 justify-center">
@@ -79,24 +77,22 @@ const Dashboard = () => {
                     </div>
                     <div id='purchasedTab' className="bg-accent-color flex-grow w-full rounded-lg mx-auto overflow-y-auto p-2 max-h-[calc(100%/5*5)] shadow-inner">
 
-                        {currentTab === "Purchased" && randomData.productNames.map((name, index) => (
-                            <div key={index} id='item-card' className='w-full bg-primary-color mb-4 rounded-xl flex flex-col md:flex-row items-start md:items-center p-2 md:p-4 shadow-xl'>
-                                <div className='bg-gray-800 w-16 h-16 p-1 rounded-md shadow-md'>
-                                    <img src={randomData.images[index]} alt="Item" className="object-cover w-full h-full rounded-md" />
+                        {currentTab === "Purchased" && transactions.map((transaction, index) => (
+                            <div key={index} id='item-card' className='...'>
+                                <div className='...'>
+                                    <img src={transaction.image_path} alt="Item" className="..." />
                                 </div>
-                                <div id='item-info' className='mx-2 md:mx-4 flex-grow mt-2 md:mt-0'>
-                                    <h2 className='text-xs md:text-sm font-semibold uppercase'>{name}</h2>
-                                    <h2 className='text-xs uppercase'>{randomData.previousOwners[index]}</h2>
-                                    <h2 className='text-xs uppercase'>{randomData.purchasedDates[index]}</h2>
-                                    <h2 className='text-xs uppercase'>{randomData.categories[index]}</h2>
+                                <div id='item-info' className='...'>
+                                    <h2 className='...'>{transaction.product_name}</h2>
+                                    <h2 className='...'>{transaction.purchase_date}</h2>
+                                    <h2 className='...'>{transaction.transaction_hash}</h2>
                                 </div>
-                                <div className='flex flex-row items-center mt-2 md:mt-0'>
-                                    <FontAwesomeIcon icon={faEthereum} className='mr-2' />
-                                    <h2 className='text-xl font-bold'>{randomData.prices[index]} ETH</h2>
+                                <div className='...'>
+                                    <FontAwesomeIcon icon={faEthereum} className='...' />
+                                    <h2 className='...'>{transaction.price} ETH</h2>
                                 </div>
                             </div>
                         ))}
-
                         {currentTab === "Stat" && <div className="flex justify-center items-center "><DonutChart /></div>}
 
                     </div>

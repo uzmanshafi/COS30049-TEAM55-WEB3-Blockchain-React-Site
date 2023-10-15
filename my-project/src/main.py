@@ -85,7 +85,6 @@ async def login_user(credentials: UserLogin):
     return {"status": "success", "user_id": user["user_id"]}
 
 
-
 # ENDPOINT FOR GET ALL USERS
 
 
@@ -146,43 +145,36 @@ async def get_product(item_id: int):
 
     return product
 
-
-# ENDPOINT FOR SAVING WALLET ADDRESSES
-@app.post("/users/save_wallet_address/")
-async def save_wallet_address(address: str):
+# ENDPOINT FOR GETTING ALL TRANSACTIONS FOR A USER
+@app.get("/transactions/{user_id}")
+async def get_transactions(user_id: int):
     connection, cursor = get_db_cursor()
 
     try:
-        cursor.execute(
-            "INSERT INTO Users (wallet_address) VALUES (%s) ON DUPLICATE KEY UPDATE wallet_address=%s", (address, address))
-        connection.commit()
+        cursor.execute("SELECT * FROM Transactions WHERE user_id=%s", (user_id,))
+        transactions = cursor.fetchall()
     except mysql.connector.Error as err:
         raise HTTPException(status_code=500, detail="Database error")
     finally:
         close_db_cursor(cursor, connection)
 
-    return {"status": "success", "address": address}
+    return transactions
 
-# ENDPOINT FOR SUBMIT PAGE
-
-
-@app.post("/upload_product/")
-async def add_product(product: ProductModel):
+# ENDPOINT FOR Display User Details in Dashboard 
+@app.get("/user/{user_id}")
+async def get_user(user_id: int):
     connection, cursor = get_db_cursor()
 
     try:
-        cursor.execute(
-            "INSERT INTO Products (product_name, description, image_path, category, price, seller, isTrending) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-            (product.product_name, product.description, product.image_path,
-             product.category, product.price, product.seller, product.isTrending)
-        )
-        connection.commit()
+        cursor.execute("SELECT * FROM Users WHERE user_id=%s", (user_id,))
+        user = cursor.fetchone()
     except mysql.connector.Error as err:
         raise HTTPException(status_code=500, detail="Database error")
     finally:
         close_db_cursor(cursor, connection)
 
-    return {"status": "success", "message": "Product added successfully"}
+    return user
+
 
 # BLOCKCHAIN RELATED CODE AND ENDPOINTS
 
