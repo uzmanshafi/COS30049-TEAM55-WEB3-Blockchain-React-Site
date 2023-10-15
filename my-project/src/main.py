@@ -65,7 +65,7 @@ async def login_user(credentials: UserLogin):
     
     return {"status": "success"}
 
-
+# ENDPOINT FOR GET ALL USERS
 @app.get("/users/")
 async def get_users():
     connection, cursor = get_db_cursor()
@@ -80,26 +80,34 @@ async def get_users():
     
     return users
 
+# ENDPOINT FOR GET ALL PRODUCTS
 @app.get("/products/")
-async def get_products(trending: bool = None):
+async def get_products(trending: bool = None, category: str = None):
     connection, cursor = get_db_cursor()
-    
+
+    query = "SELECT * FROM Products"
+
+    if trending:
+        query += " WHERE isTrending=1"
+    elif category:
+        query += " WHERE category=%s"
+
     try:
-        if trending:
-            cursor.execute("SELECT * FROM Products WHERE isTrending=1")
+        if category:
+            cursor.execute(query, (category,))
         else:
-            cursor.execute("SELECT * FROM Products")
-            
+            cursor.execute(query)
         products = cursor.fetchall()
     except mysql.connector.Error as err:
         raise HTTPException(status_code=500, detail="Database error")
     finally:
         close_db_cursor(cursor, connection)
-    
+
     return products
 
 
 
+# ENDPOINT FOR SAVING WALLET ADDRESSES
 @app.post("/users/save_wallet_address/")
 async def save_wallet_address(address: str):
     connection, cursor = get_db_cursor()
@@ -114,6 +122,7 @@ async def save_wallet_address(address: str):
     
     return {"status": "success", "address": address}
 
+# ENDPOINT FOR SUBMIT PAGE
 @app.post("/upload_product/")
 async def add_product(product: ProductModel):
     connection, cursor = get_db_cursor()

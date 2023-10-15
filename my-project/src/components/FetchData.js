@@ -12,7 +12,9 @@ const FetchData = ({ tab }) => {
     useEffect(() => {
         let endpoint = 'http://127.0.0.1:8000/products/';
         if (tab === 'Trending') {
-            endpoint += '?trending=true';  // This will be a query param to filter trending products in backend
+            endpoint += '?trending=true';  // Filters trending products
+        } else if (tab !== "All") {
+            endpoint += `?category=${tab}`;  // Filters products by category
         }
 
         axios.get(endpoint)

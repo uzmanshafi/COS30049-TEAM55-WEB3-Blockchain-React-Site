@@ -34,8 +34,10 @@ const Header = ({ isLoggedIn, userEmail, setIsLoggedIn, setUserEmail }) => {
 
 
     let Links = [
-        { name: 'Home', link: '/' }
+        { name: 'Home', link: '/' },
+        { name: 'Products Page', link: '/productspage' } 
     ];
+    
     
     if (isLoggedIn) {
         Links.push(

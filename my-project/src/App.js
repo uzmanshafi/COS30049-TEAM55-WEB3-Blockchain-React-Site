@@ -14,6 +14,7 @@ import Dashboard from './pages/dashboard.js'
 import Product from './pages/product.js'
 import Login from './pages/login.js'
 import FetchData from './components/FetchData.js'
+import ProductsPage from './pages/productspage.js';
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="upload" element={<Upload />} />
             <Route path="product" element={<Product />} />
+            <Route path="productspage" element={<ProductsPage />} />
             <Route path="login" element={<Login setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} />} />
             <Route path="fetchdata" element={<FetchData />} />
           </Routes>
