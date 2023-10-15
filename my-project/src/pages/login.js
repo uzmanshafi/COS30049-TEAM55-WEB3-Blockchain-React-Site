@@ -2,16 +2,29 @@ import React, { useState, useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const Login = () => {
+const Login = ({ setIsLoggedIn, setUserEmail }) => {
+    const navigate = useNavigate();
     const [error, setError] = useState(''); // To show error messages
-    const email=useRef()
-    const password=useRef()
-    const handleSubmit=()=> {
-       if(email.current.value=="admin@gmail.com"&&password.current.value=="admin"){
-        localStorage.setItem("emailData","admin@gmail.com")
-        localStorage.setItem("passwordData","admin")
-       }
-    }
+    const email = useRef()
+    const password = useRef()
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            const response = await axios.post('http://127.0.0.1:8000/login/', {
+                email: email.current.value,
+                password: password.current.value,
+            });
+            if (response.data.status === 'success') {
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('emailData', email.current.value);  // Assumes this is how you save the email
+                setUserEmail(email.current.value);
+                setIsLoggedIn(true);
+                navigate('/dashboard');  // Navigates us to the dashboard page
+            }
+        } catch (error) {
+            setError('Invalid credentials');
+        }
+    };
 
     return (
         <div className="flex items-center justify-center min-h-screen ">
@@ -24,7 +37,7 @@ const Login = () => {
 
                     <div className="flex flex-col space-y-2">
                         <label htmlFor='password' className="text-left text-accent-color font-bold">Password</label>
-                        <input className="p-2 border rounded" ref={password}  type='password' name='password' placeholder='********' />
+                        <input className="p-2 border rounded" ref={password} type='password' name='password' placeholder='********' />
                     </div>
 
                     <div>
