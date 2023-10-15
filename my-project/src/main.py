@@ -106,6 +106,22 @@ async def get_products(trending: bool = None, category: str = None):
     return products
 
 
+# ENDPOINT FOR GETTING INDIVIDUAL PRODUCT INFORMATION
+@app.get("/products/{item_id}")
+async def get_product(item_id: int):
+    connection, cursor = get_db_cursor()
+    
+    try:
+        cursor.execute("SELECT * FROM Products WHERE item_id=%s", (item_id,))
+        product = cursor.fetchone()
+    except mysql.connector.Error as err:
+        raise HTTPException(status_code=500, detail="Database error")
+    finally:
+        close_db_cursor(cursor, connection)
+    
+    return product
+
+
 
 # ENDPOINT FOR SAVING WALLET ADDRESSES
 @app.post("/users/save_wallet_address/")

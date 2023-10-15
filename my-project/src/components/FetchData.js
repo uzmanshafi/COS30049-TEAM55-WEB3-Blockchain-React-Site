@@ -18,7 +18,7 @@ const FetchData = ({ tab }) => {
         } else if (tab !== "All") {
             endpoint += `?category=${tab}`;  // Filters products by category
         }
-        
+
         axios.get(endpoint)
             .then(res => { setProducts(res.data) })
             .catch(err => console.log(err))
@@ -47,7 +47,10 @@ const FetchData = ({ tab }) => {
                                 <FontAwesomeIcon icon={faEthereum} className='pr-2' /> {product.price} ETH
                             </h2>
                             <button
-                                onClick={() => navigate('/product')}
+                                onClick={() => {
+                                    console.log("Navigating with product:", product);
+                                    navigate('/product', { state: { product } });
+                                }}
                                 className="bg-secondary-color py-2 px-4 rounded-md shadow-md font-bold tracking-wider text-white border-2 border-white"
                             >
                                 BUY NOW
