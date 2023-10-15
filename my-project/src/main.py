@@ -50,11 +50,15 @@ async def get_users():
     return users
 
 @app.get("/products/")
-async def get_products():
+async def get_products(trending: bool = None):
     connection, cursor = get_db_cursor()
     
     try:
-        cursor.execute("SELECT * FROM Products")
+        if trending:
+            cursor.execute("SELECT * FROM Products WHERE isTrending=1")
+        else:
+            cursor.execute("SELECT * FROM Products")
+            
         products = cursor.fetchall()
     except mysql.connector.Error as err:
         raise HTTPException(status_code=500, detail="Database error")
@@ -62,6 +66,7 @@ async def get_products():
         close_db_cursor(cursor, connection)
     
     return products
+
 
 @app.post("/users/save_wallet_address/")
 async def save_wallet_address(address: str):
