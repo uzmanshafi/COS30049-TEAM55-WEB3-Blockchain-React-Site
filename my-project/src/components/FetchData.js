@@ -13,10 +13,12 @@ const FetchData = ({ tab }) => {
         let endpoint = 'http://127.0.0.1:8000/products/';
         if (tab === 'Trending') {
             endpoint += '?trending=true';  // Filters trending products
+        } else if (tab === "Recent") {
+            endpoint += '?recent=true';  // Filters recent products
         } else if (tab !== "All") {
             endpoint += `?category=${tab}`;  // Filters products by category
         }
-
+        
         axios.get(endpoint)
             .then(res => { setProducts(res.data) })
             .catch(err => console.log(err))
