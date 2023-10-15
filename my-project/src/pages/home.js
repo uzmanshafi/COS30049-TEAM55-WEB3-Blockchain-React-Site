@@ -1,29 +1,15 @@
 import React, { useState } from 'react';
 import homeImage from '../images/home-image1.png';
-import ProductCard from '../components/product-card';
-import productData from '../Dataset/data'; 
-import { NavLink } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEthereum } from '@fortawesome/free-brands-svg-icons';
+import FetchData from './../components/FetchData'; // Import the FetchData component
 
 const Home = () => {
-    const [activeTab, setActiveTab] = useState("Trending");
-  
-    const getRandomProducts = (num = 5) => {
-      const allProducts = productData; // Your actual product data
-      const randomProducts = [];
-      while (randomProducts.length < num) {
-        const rand = Math.floor(Math.random() * allProducts.length);
-        if (!randomProducts.includes(allProducts[rand])) {
-          randomProducts.push(allProducts[rand]);
-        }
-      }
-      return randomProducts;
-    };
-  
-    const displayProducts = activeTab === "Trending" ? productData : getRandomProducts();
+  const [activeTab, setActiveTab] = useState("Trending");
 
-    return (
-        <div className="grid grid-rows-[auto,1fr]">
-            <div className="w-full flex justify-center items-center py-6 md:py-10">
+  return (
+    <div className="grid grid-rows-[auto,1fr]">
+        <div className="w-full flex justify-center items-center py-6 md:py-10">
                 <div className="bg-primary-color px-4 py-6 md:p-10 rounded-md flex flex-col md:flex-row justify-between items-center md:w-1/2">
                     <div className="flex flex-col justify-center items-center mb-4 md:mb-0 md:w-4/5">
                         <h2 className="text-xs md:text-xl font-bold mb-2">BUY THE LATEST</h2>
@@ -41,31 +27,29 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-            <div className=" w-full flex flex-col items-start">
-                <div className="flex justify-start self-center px-4 md:px-10">
-                    <button
-                        className={`px-6 py-2 rounded-full m-4 uppercase font-semibold shadow-md ${activeTab === "Trending" ? "bg-primary-color" : "bg-gray-600"}`}
-                        onClick={() => setActiveTab("Trending")}
-                    >
-                        Trending
-                    </button>
-                    <button
-                        className={`px-6 py-2 rounded-full m-4 uppercase font-semibold shadow-md ${activeTab === "Recent" ? "bg-primary-color" : "bg-gray-600"}`}
-                        onClick={() => setActiveTab("Recent")}
-                    >
-                        Recent
-                    </button>
-                </div>
-                <div className="p-4 md:p-12 flex flex-wrap justify-center items-start">
-                    {displayProducts.map((product, index) => (
-                        <div className="m-2 md:m-4" key={product.id}>
-                            <ProductCard product={product} />
-                        </div>
-                    ))}
-                </div>
-            </div>
+      <div className=" w-full flex flex-col items-start">
+        <div className="flex justify-start self-center px-4 md:px-10">
+          <button
+            className={`px-6 py-2 rounded-full m-4 uppercase font-semibold shadow-md ${
+              activeTab === "Trending" ? "bg-primary-color" : "bg-gray-600"
+            }`}
+            onClick={() => setActiveTab("Trending")}
+          >
+            Trending
+          </button>
+          <button
+            className={`px-6 py-2 rounded-full m-4 uppercase font-semibold shadow-md ${
+              activeTab === "Recent" ? "bg-primary-color" : "bg-gray-600"
+            }`}
+            onClick={() => setActiveTab("Recent")}
+          >
+            Recent
+          </button>
         </div>
-    );
+        <FetchData />
+      </div>
+    </div>
+  );
 };
 
 export default Home;
