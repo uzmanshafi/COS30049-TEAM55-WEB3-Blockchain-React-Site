@@ -102,8 +102,17 @@ const Header = ({ isLoggedIn, userEmail, setIsLoggedIn, setUserEmail }) => {
                             <NavLink to={link.link}>{link.name}</NavLink>
                         </li>
                     ))}
-                    <li className="font-semibold my-7 mx-4 md:my-0 md:ml-8 tracking-wider">
-                        <SearchBar className="overflow-hidden overflow-y-auto" placeholder="Enter a product name.." data={data}/>
+                    <li className="font-semibold my-7 mx-2 md:my-0 md:ml-4 tracking-wider">
+                        <NavLink to="/search">
+                            <button className="btn -my-2 py-1 px-2 md:ml-8 rounded-md bg-white md:static tracking-wide w-52 text-sm text-darker-grey">
+                                <div className="flex items-center">
+                                    <svg className="w-4 mr-2 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                    </svg>
+                                    To search page..
+                                </div>
+                            </button>
+                        </NavLink>
                     </li>
                     {isLoggedIn ? (
                         <>

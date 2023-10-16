@@ -15,6 +15,7 @@ import Product from './pages/product.js'
 import Login from './pages/login.js'
 import FetchData from './components/FetchData.js'
 import ProductsPage from './pages/productspage.js';
+import SearchProduct from './pages/search_product.js'
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
             <Route path="productspage" element={<ProductsPage />} />
             <Route path="login" element={<Login setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} />} />
             <Route path="fetchdata" element={<FetchData />} />
+            <Route path ="search" element={<SearchProduct />}/>
           </Routes>
         </div>
         <Footer />

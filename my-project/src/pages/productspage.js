@@ -7,7 +7,7 @@ const ProductsPage = () => {
     return (
         <div className="grid grid-rows-[auto,1fr]">
             <div className="w-full flex justify-center items-center py-6 md:py-10">
-                {/* ... Add any header or description if needed ... */}
+
             </div>
             <div className=" w-full flex flex-col items-start">
                 <div className="flex justify-start self-center px-4 md:px-10">

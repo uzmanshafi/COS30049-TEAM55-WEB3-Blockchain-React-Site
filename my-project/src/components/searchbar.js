@@ -1,8 +1,10 @@
 import React from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function SearchBar({ placeholder, data }) {
-    
+    const navigate = useNavigate();
+
     const [filteredData, setFilteredData] = useState([]);
 
     const handleFilter = (event) => {
@@ -17,6 +19,9 @@ function SearchBar({ placeholder, data }) {
             setFilteredData(newFilter);
         }
 
+        if(searchWord.length === 1) {
+            navigate('/search');
+        }
     }
 
     return (
@@ -31,11 +36,12 @@ function SearchBar({ placeholder, data }) {
             </div>
             {filteredData.length != 0 && (
                 <div className="dataResult absolute block w-56 p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    {filteredData.slice(0, 8).map((product, index) => {
+                    {filteredData.slice(0, 0).map((product, index) => {
                         return <a className="dataItem w-100% h-40px display-flex align no-underline" href="/product">
                             <p className="pt-1 overflow-hidden overflow-y-auto hover:bg-grey">{product.product_name}</p>
                         </a>;
                     })}
+                    
                 </div>
             )}
 
