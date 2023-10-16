@@ -13,6 +13,7 @@ module.exports = {
       'accent-color': '#262626',
       'black': '#070708',
       'purple': '#8f42c7',
+      'grey' : '#E0E0E0',
     },
     extend: {},
   },

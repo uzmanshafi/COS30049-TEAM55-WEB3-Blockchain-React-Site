@@ -4,10 +4,12 @@ import { faEthereum } from '@fortawesome/free-brands-svg-icons';
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { NavLink, useNavigate } from 'react-router-dom';
 import SearchBar from './searchbar';
+import axios from 'axios';
 
 const Header = ({ isLoggedIn, userEmail, setIsLoggedIn, setUserEmail }) => {
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
+    const [data, setData] = useState([]);
 
     useEffect(() => {
         function updateLoginStatus() {
@@ -31,6 +33,16 @@ const Header = ({ isLoggedIn, userEmail, setIsLoggedIn, setUserEmail }) => {
             window.removeEventListener('storage', updateLoginStatus);
         };
     }, []);
+
+    useEffect(() => {
+        axios.get('http://127.0.0.1:8000/products/')
+          .then((response) => {
+            setData(response.data);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }, []);
 
 
     let Links = [
@@ -56,17 +68,7 @@ const Header = ({ isLoggedIn, userEmail, setIsLoggedIn, setUserEmail }) => {
         { name: 'Dashboard', link: '/dashboard' },
     ];
 
-    const performSearch = (query) => {
-        const matchedPage = allPages.find((page) =>
-            page.name.toLowerCase().includes(query.toLowerCase())
-        );
 
-        if (matchedPage) {
-            navigate(matchedPage.link);
-        } else {
-            console.log('Page not found');
-        }
-    };
 
     return (
         <div className="shadow-md w-full bg-primary-color fixed top-0 left-0 z-10">
@@ -101,7 +103,7 @@ const Header = ({ isLoggedIn, userEmail, setIsLoggedIn, setUserEmail }) => {
                         </li>
                     ))}
                     <li className="font-semibold my-7 mx-4 md:my-0 md:ml-8 tracking-wider">
-                        <SearchBar onSearch={performSearch} />
+                        <SearchBar className="overflow-hidden overflow-y-auto" placeholder="Enter a product name.." data={data}/>
                     </li>
                     {isLoggedIn ? (
                         <>
