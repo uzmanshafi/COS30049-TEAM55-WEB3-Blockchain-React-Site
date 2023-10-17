@@ -91,12 +91,12 @@ const Header = ({ isLoggedIn, userEmail, setIsLoggedIn, setUserEmail }) => {
                             <NavLink to={link.link}>{link.name}</NavLink>
                         </li>
                     ))}
-                    <li className="font-semibold my-7 mx-4 md:my-0 md:ml-8 tracking-wider">
+                    <li className="font-semibold my-2 mx-0 md:my-0 md:mx-10">
                         <SearchBar onSearch={performSearch} />
                     </li>
                     {isLoggedIn ? (
                         <>
-                            <li className='pb-6'>{userEmail}</li>
+                            <li className='pb-6 md:pb-0'>{userEmail}</li>
                             <button
                                 onClick={() => {
                                     localStorage.removeItem("emailData");
