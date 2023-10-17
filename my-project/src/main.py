@@ -243,8 +243,6 @@ async def get_user(user_id: int):
     return user
 
 # BLOCKCHAIN RELATED CODE AND ENDPOINTS
-
-
 @app.get("/deployContract")
 async def deploy_contract():
     w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
