@@ -53,7 +53,6 @@ const Header = ({ isLoggedIn, userEmail, setIsLoggedIn, setUserEmail }) => {
     
     if (isLoggedIn) {
         Links.push(
-            { name: 'Upload', link: '/upload' },
             { name: 'Dashboard', link: '/dashboard' }
         );
     }
@@ -64,7 +63,6 @@ const Header = ({ isLoggedIn, userEmail, setIsLoggedIn, setUserEmail }) => {
         { name: 'About', link: '/about' },
         { name: 'Product', link: '/product' },
         { name: 'Search Product', link: '/search_product' },
-        { name: 'Submit Product', link: '/submit_product' },
         { name: 'Dashboard', link: '/dashboard' },
     ];
 
@@ -102,7 +100,7 @@ const Header = ({ isLoggedIn, userEmail, setIsLoggedIn, setUserEmail }) => {
                             <NavLink to={link.link}>{link.name}</NavLink>
                         </li>
                     ))}
-                    <li className="font-semibold my-7 mx-2 md:my-0 md:ml-4 tracking-wider">
+                    <li className="font-semibold my-7 mx-2 md:my-0 md:ml-4 tracking-wider pr-2">
                         <NavLink to="/search">
                             <button className="btn -my-2 py-1 px-2 md:ml-8 rounded-md bg-white md:static tracking-wide w-52 text-sm text-darker-grey">
                                 <div className="flex items-center">
@@ -116,7 +114,7 @@ const Header = ({ isLoggedIn, userEmail, setIsLoggedIn, setUserEmail }) => {
                     </li>
                     {isLoggedIn ? (
                         <>
-                            <li>{userEmail}</li>
+                            <li className="">{userEmail}</li>
                             <button
                                 onClick={() => {
                                     localStorage.removeItem("emailData");

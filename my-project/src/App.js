@@ -9,7 +9,6 @@ import Header from './components/navbar'
 import Footer from './components/footer'
 import About from './pages/about.js'
 import Home from './pages/home.js'
-import Upload from './pages/submit_product.js'
 import Dashboard from './pages/dashboard.js'
 import Product from './pages/product.js'
 import Login from './pages/login.js'
@@ -31,7 +30,6 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="about" element={<About />} />
             <Route path="dashboard" element={<Dashboard />} />
-            <Route path="upload" element={<Upload />} />
             <Route path="product" element={<Product />} />
             <Route path="productspage" element={<ProductsPage />} />
             <Route path="login" element={<Login setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} />} />
