@@ -1,20 +1,27 @@
 import React, { useEffect, useRef } from 'react';
 
-import Chart from 'chart.js/auto'; 
+import Chart from 'chart.js/auto';
 
-const DonutChart = () => {
+const DonutChart = ({ data }) => {
   const chartRef = useRef(null);
 
   useEffect(() => {
     const ctx = chartRef.current.getContext('2d');
 
+    // Extract values from the data prop or default to 0
+    const gamingCount = data?.Gaming || 0;
+    const musicCount = data?.Music || 0;
+    const artCount = data?.Art || 0;
+    const softwareCount = data?.Software || 0;
+
+
     new Chart(ctx, {
       type: 'doughnut',
       data: {
-        labels: ['Games', 'Entertainment', 'Art', 'Membership'],
+        labels: ['Gaming', 'Music', 'Art', 'Software'],
         datasets: [
           {
-            data: [12, 19, 3, 5],
+            data: [gamingCount, musicCount, artCount, softwareCount],
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
               'rgba(54, 162, 235, 0.2)',
@@ -48,7 +55,7 @@ const DonutChart = () => {
         }
       }
     });
-  }, []);
+  }, [data]);
 
   return (
     <div className="h-fit w-full md:w-96 md:h-96">

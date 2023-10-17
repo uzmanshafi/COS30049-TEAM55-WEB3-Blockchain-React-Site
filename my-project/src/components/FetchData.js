@@ -5,24 +5,30 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEthereum } from '@fortawesome/free-brands-svg-icons';
 import { useNavigate } from 'react-router-dom';
 
-const FetchData = ({ tab }) => {
+const FetchData = ({ tab, query }) => {
     const [products, setProducts] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
         let endpoint = 'http://127.0.0.1:8000/products/';
+
         if (tab === 'Trending') {
-            endpoint += '?trending=true';  // Filters trending products
+            endpoint += '?trending=true';
         } else if (tab === "Recent") {
-            endpoint += '?recent=true';  // Filters recent products
+            endpoint += '?recent=true';
         } else if (tab !== "All") {
-            endpoint += `?category=${tab}`;  // Filters products by category
+            endpoint += `?category=${tab}`;
+        }
+
+        if (query) {
+            const separator = endpoint.includes('?') ? '&' : '?';
+            endpoint += `${separator}search=${query}`;
         }
 
         axios.get(endpoint)
             .then(res => { setProducts(res.data) })
             .catch(err => console.log(err))
-    }, [tab]);
+    }, [tab, query]);
 
     return (
         <div className="p-4 md:p-12 flex flex-wrap justify-center items-start">

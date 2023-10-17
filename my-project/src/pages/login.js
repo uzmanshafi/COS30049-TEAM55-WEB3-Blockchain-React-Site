@@ -2,11 +2,12 @@ import React, { useState, useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const Login = ({ setIsLoggedIn, setUserEmail }) => {
+const Login = ({ setIsLoggedIn, setUserEmail, setUserId }) => {
     const navigate = useNavigate();
     const [error, setError] = useState(''); // To show error messages
     const email = useRef()
     const password = useRef()
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
@@ -14,12 +15,29 @@ const Login = ({ setIsLoggedIn, setUserEmail }) => {
                 email: email.current.value,
                 password: password.current.value,
             });
+
             if (response.data.status === 'success') {
+                setUserId(response.data.user_id);  // Sets user ID here
+
+                // Saves user ID in local storage
+                localStorage.setItem('userId', response.data.user_id);
+                // Once logged in, deploys the contract
+                try {
+                    const deployResponse = await axios.get('http://127.0.0.1:8000/deployContract');
+                    if (deployResponse.data["Smart Contract deployed"]) {
+                        console.log("Smart contract deployed at:", deployResponse.data["Smart Contract deployed"]);
+                    }
+                } catch (deployError) {
+                    console.error("Error deploying contract:", deployError);
+                    setError('Contract deployment failed. Please try again later.');
+                    return;
+                }
+    
                 localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('emailData', email.current.value);  // Assumes this is how you save the email
+                localStorage.setItem('emailData', email.current.value);
                 setUserEmail(email.current.value);
                 setIsLoggedIn(true);
-                navigate('/dashboard');  // Navigates us to the dashboard page
+                navigate('/dashboard');
             }
         } catch (error) {
             setError('Invalid credentials');

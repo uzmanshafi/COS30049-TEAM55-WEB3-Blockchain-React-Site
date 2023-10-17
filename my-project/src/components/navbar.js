@@ -4,12 +4,10 @@ import { faEthereum } from '@fortawesome/free-brands-svg-icons';
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { NavLink, useNavigate } from 'react-router-dom';
 import SearchBar from './searchbar';
-import axios from 'axios';
 
 const Header = ({ isLoggedIn, userEmail, setIsLoggedIn, setUserEmail }) => {
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
-    const [data, setData] = useState([]);
 
     useEffect(() => {
         function updateLoginStatus() {
@@ -33,16 +31,6 @@ const Header = ({ isLoggedIn, userEmail, setIsLoggedIn, setUserEmail }) => {
             window.removeEventListener('storage', updateLoginStatus);
         };
     }, []);
-
-    useEffect(() => {
-        axios.get('http://127.0.0.1:8000/products/')
-          .then((response) => {
-            setData(response.data);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      }, []);
 
 
     let Links = [
@@ -68,7 +56,10 @@ const Header = ({ isLoggedIn, userEmail, setIsLoggedIn, setUserEmail }) => {
         { name: 'Dashboard', link: '/dashboard' },
     ];
 
-
+    const performSearch = (query) => {
+        navigate("/search_product", { state: { searchQuery: query } });
+    };
+    
 
     return (
         <div className="shadow-md w-full bg-primary-color fixed top-0 left-0 z-10">
@@ -102,17 +93,8 @@ const Header = ({ isLoggedIn, userEmail, setIsLoggedIn, setUserEmail }) => {
                             <NavLink to={link.link}>{link.name}</NavLink>
                         </li>
                     ))}
-                    <li className="font-semibold my-7 mx-2 md:my-0 md:ml-4 tracking-wider">
-                        <NavLink to="/search">
-                            <button className="btn -my-2 py-1 px-2 md:ml-8 rounded-md bg-white md:static tracking-wide w-52 text-sm text-darker-grey">
-                                <div className="flex items-center">
-                                    <svg className="w-4 mr-2 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                                    </svg>
-                                    To search page..
-                                </div>
-                            </button>
-                        </NavLink>
+                    <li className="font-semibold my-7 mx-4 md:my-0 md:ml-8 tracking-wider">
+                        <SearchBar onSearch={performSearch} />
                     </li>
                     {isLoggedIn ? (
                         <>
