@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import FetchData from './../components/FetchData'; // Import the FetchData component
+import FetchData from './../components/FetchData';
 
 const ProductsPage = () => {
     const [activeTab, setActiveTab] = useState("All"); // Default tab is "All"

@@ -16,6 +16,7 @@ import Product from './pages/product.js'
 import Login from './pages/login.js'
 import FetchData from './components/FetchData.js'
 import ProductsPage from './pages/productspage.js';
+import SearchProduct from './pages/search_product.js';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -35,6 +36,7 @@ function App() {
             <Route path="upload" element={<Upload isLoggedIn={isLoggedIn}/>} />
             <Route path="product" element={<Product isLoggedIn={isLoggedIn} userId={userId} />} />
             <Route path="productspage" element={<ProductsPage isLoggedIn={isLoggedIn}/>} />
+            <Route path="search_product" element={<SearchProduct isLoggedIn={isLoggedIn}/>} />
             <Route path="login" element={<Login setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} setUserId={setUserId} />} />
             <Route path="fetchdata" element={<FetchData />} />
           </Routes>

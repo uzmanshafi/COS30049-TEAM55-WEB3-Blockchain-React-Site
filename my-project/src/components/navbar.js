@@ -57,16 +57,9 @@ const Header = ({ isLoggedIn, userEmail, setIsLoggedIn, setUserEmail }) => {
     ];
 
     const performSearch = (query) => {
-        const matchedPage = allPages.find((page) =>
-            page.name.toLowerCase().includes(query.toLowerCase())
-        );
-
-        if (matchedPage) {
-            navigate(matchedPage.link);
-        } else {
-            console.log('Page not found');
-        }
+        navigate("/search_product", { state: { searchQuery: query } });
     };
+    
 
     return (
         <div className="shadow-md w-full bg-primary-color fixed top-0 left-0 z-10">

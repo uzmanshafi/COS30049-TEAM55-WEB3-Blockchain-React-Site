@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel
 import mysql.connector
 from fastapi.middleware.cors import CORSMiddleware
@@ -34,11 +34,13 @@ class ProductModel(BaseModel):
     seller: int
     isTrending: bool
 
+
 class PurchaseItem(BaseModel):
     user_id: int
     item_id: int
     price: float
-    
+
+
 # MySQL database connection configuration
 db_config = {
     "host": "feenix-mariadb.swin.edu.au",
@@ -73,8 +75,9 @@ async def get_category_counts(user_id: int):
         cursor.execute(query, (user_id,))
         results = cursor.fetchall()
 
-        category_counts = {result['category']: result['count'] for result in results}
-        
+        category_counts = {result['category']
+            : result['count'] for result in results}
+
         return category_counts
     except mysql.connector.Error as err:
         raise HTTPException(status_code=500, detail=f"Database error: {err}")
@@ -165,6 +168,8 @@ async def get_product(item_id: int):
     return product
 
 # ENDPOINT FOR GETTING ALL TRANSACTIONS FOR A USER
+
+
 @app.get("/transactions/{user_id}")
 async def get_transactions(user_id: int):
     connection, cursor = get_db_cursor()
@@ -177,13 +182,50 @@ async def get_transactions(user_id: int):
         """, (user_id,))
         transactions = cursor.fetchall()
     except mysql.connector.Error as err:
-        raise HTTPException(status_code=500, detail=f"Database error: {str(err)}")
+        raise HTTPException(
+            status_code=500, detail=f"Database error: {str(err)}")
     finally:
         close_db_cursor(cursor, connection)
 
     return transactions
 
-# ENDPOINT FOR Display User Details in Dashboard 
+
+@app.get("/search_products/")
+async def search_products(query: str = Query(..., description="Query string for searching products by name or category")):
+    connection, cursor = get_db_cursor()
+    try:
+        search_query = f"%{query.lower()}%"
+        cursor.execute(
+            "SELECT * FROM Products WHERE LOWER(product_name) LIKE %s OR LOWER(category) LIKE %s",
+            (search_query, search_query)
+        )
+        results = cursor.fetchall()
+
+        return results if results else {"message": "No products found for the given query"}
+    except mysql.connector.Error as err:
+        raise HTTPException(status_code=500, detail=f"Database error: {err}")
+    finally:
+        close_db_cursor(cursor, connection)
+
+
+@app.get("/suggest_products/")
+async def suggest_products(query: str):
+    connection, cursor = get_db_cursor()
+    try:
+        search_query = f"%{query.lower()}%"
+        cursor.execute(
+            "SELECT DISTINCT product_name FROM Products WHERE LOWER(product_name) LIKE %s LIMIT 5",
+            (search_query,)
+        )
+        results = cursor.fetchall()
+        return results
+    except mysql.connector.Error as err:
+        raise HTTPException(status_code=500, detail=f"Database error: {err}")
+    finally:
+        close_db_cursor(cursor, connection)
+
+
+# ENDPOINT FOR Display User Details in Dashboard
 @app.get("/user/{user_id}")
 async def get_user(user_id: int):
     connection, cursor = get_db_cursor()
@@ -193,13 +235,15 @@ async def get_user(user_id: int):
         if not user:
             raise HTTPException(status_code=404, detail="User not found.")
     except mysql.connector.Error as err:
-        raise HTTPException(status_code=500, detail=f"Database error: {str(err)}")
+        raise HTTPException(
+            status_code=500, detail=f"Database error: {str(err)}")
     finally:
         close_db_cursor(cursor, connection)
 
     return user
 
 # BLOCKCHAIN RELATED CODE AND ENDPOINTS
+
 
 @app.get("/deployContract")
 async def deploy_contract():
@@ -242,7 +286,8 @@ async def deploy_contract():
         })
         transaction.pop('to')
 
-        signed_txn = w3.eth.account.sign_transaction(transaction, private_key=private_key)
+        signed_txn = w3.eth.account.sign_transaction(
+            transaction, private_key=private_key)
         tx_hash = w3.eth.send_raw_transaction(signed_txn.rawTransaction)
         tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
         global deployed_contract_address
@@ -252,10 +297,12 @@ async def deploy_contract():
         with open("contract_address.txt", "w") as file:
             file.write(deployed_contract_address)
 
-        print(f"Smart Contract deployed at address: {deployed_contract_address}")
+        print(
+            f"Smart Contract deployed at address: {deployed_contract_address}")
         return {"Smart Contract deployed": deployed_contract_address}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Blockchain operation failed: {e}")
+        raise HTTPException(
+            status_code=500, detail=f"Blockchain operation failed: {e}")
 
 
 @app.post("/purchase_product/")
@@ -272,11 +319,11 @@ async def purchase_product(purchase: PurchaseItem):
     with open("contract_address.txt", "r") as file:
         contract_address = file.read().strip()
     smart_contract = w3.eth.contract(address=contract_address, abi=abi)
-    
+
     try:
         nonce = w3.eth.get_transaction_count(my_address)
         amount_in_wei = int(purchase.price * (10 ** 18))
-        
+
         tx = smart_contract.functions.purchaseItem(purchase.item_id, amount_in_wei).build_transaction({
             "chainId": chain_id,
             "gasPrice": w3.eth.gas_price,
@@ -285,7 +332,8 @@ async def purchase_product(purchase: PurchaseItem):
             "value": amount_in_wei
         })
 
-        signed_txn = w3.eth.account.sign_transaction(tx, private_key=private_key)
+        signed_txn = w3.eth.account.sign_transaction(
+            tx, private_key=private_key)
         tx_hash = w3.eth.send_raw_transaction(signed_txn.rawTransaction)
         tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
 
@@ -309,7 +357,8 @@ async def purchase_product(purchase: PurchaseItem):
             "status": "Failed",
             "error": str(e)
         }
-        
+
+
 @app.get("/checkContractDeployment")
 async def check_contract_deployment():
     try:
@@ -320,16 +369,18 @@ async def check_contract_deployment():
         return {"isDeployed": False}
     except:
         return {"isDeployed": False}
-    
+
+
 @app.get("/updateUserBalance/{user_id}")
 async def update_user_balance(user_id: int):
 
     w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
-    
+
     connection, cursor = get_db_cursor()
     try:
         # Checks if the user exists
-        cursor.execute("SELECT user_id FROM Users WHERE user_id=%s", (user_id,))
+        cursor.execute(
+            "SELECT user_id FROM Users WHERE user_id=%s", (user_id,))
         result = cursor.fetchone()
         if not result:
             raise HTTPException(status_code=404, detail="User not found")
@@ -340,21 +391,16 @@ async def update_user_balance(user_id: int):
         balance_eth = w3.from_wei(balance_wei, "ether")
 
         # Updates the balance in the database
-        cursor.execute("UPDATE Users SET balance=%s WHERE user_id=%s", (float(balance_eth), user_id))
+        cursor.execute("UPDATE Users SET balance=%s WHERE user_id=%s",
+                       (float(balance_eth), user_id))
         connection.commit()
-        
+
         return {"status": "success", "balance": balance_eth}
 
     except mysql.connector.Error as err:
         raise HTTPException(status_code=500, detail=f"Database error: {err}")
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error updating user balance: {e}")
+        raise HTTPException(
+            status_code=500, detail=f"Error updating user balance: {e}")
     finally:
         close_db_cursor(cursor, connection)
-
-
-    
-    
-
-
-
