@@ -90,9 +90,9 @@ const Dashboard = () => {
 
                 {/* Transactions */}
                 <div className="bg-primary-color w-full md:w-3/5 rounded-lg flex flex-col flex-grow p-2 md:p-8 mx-auto">
-                    <div className="flex flex-row flex-wrap p-4 w-full">
-                        <button onClick={() => setCurrentTab("Purchased")} className="bg-secondary-color mx-2 my-1 md:my-0 rounded-xl p-2 text-xs md:text-lg uppercase font-semibold text-white shadow-md">Purchased</button>
-                        <button onClick={() => setCurrentTab("Stat")} className="bg-secondary-color mx-2 my-1 md:my-0 rounded-xl p-2 text-xs md:text-lg uppercase font-semibold text-white">Stats</button>
+                    <div className="flex flex-col md:flex-row flex-wrap p-4 w-full">
+                        <button onClick={() => setCurrentTab("Purchased")} className="bg-secondary-color w-full md:w-auto mx-2 my-1 md:my-0 rounded-xl p-2 text-xs md:text-lg uppercase font-semibold text-white shadow-md">Purchased</button>
+                        <button onClick={() => setCurrentTab("Stat")} className="bg-secondary-color w-full md:w-auto mx-2 my-1 md:my-0 rounded-xl p-2 text-xs md:text-lg uppercase font-semibold text-white">Stats</button>
                     </div>
                     <div
                         id='purchasedTab'
@@ -100,16 +100,18 @@ const Dashboard = () => {
                         style={{ maxHeight: "458px" }}
                     >
                         {currentTab === "Purchased" && transactions.map((transaction, index) => (
-                            <div key={index} className='flex flex-row my-4 mx-2 bg-white p-4 rounded shadow-md items-center'>
-                                <img src={transaction.image_path} alt="Item" className="rounded-md w-2/12 object-cover mr-4" />
-                                <div className='flex flex-col flex-grow pr-4'>
-                                    <h2 className='font-bold text-lg mb-2'>{transaction.product_name}</h2>
-                                    <h2 className='font-medium text-sm italic mb-1'>{new Date(transaction.purchase_date).toLocaleDateString()}</h2>
-                                    <h2 className='text-xs text-gray-500 truncate'>{transaction.transaction_hash}</h2>
+                            <div key={index} className='flex flex-col md:flex-row my-4 mx-2 bg-white p-4 rounded shadow-md items-center'>
+                                <img src={transaction.image_path} alt="Item" className="rounded-md w-11/12 md:w-2/12 object-cover mr-4 mb-2 md:mb-0 mx-auto md:mx-0" />
+                                <div className='flex flex-col md:flex-row flex-grow pr-4'>
+                                    <div className='p-2'>
+                                    <h2 className='font-bold text-lg md:text-2xl'>{transaction.product_name}</h2>
+                                    <h2 className='font-medium text-sm italic md:pt-2 '>{new Date(transaction.purchase_date).toLocaleDateString()}</h2>
+                                    </div>
+                                    <h2 className='text-xs md:text-sm md:py-4 md:pl-4 text-blue-700 break-all w-full md:w-auto' title={transaction.transaction_hash}>{transaction.transaction_hash}</h2>
                                 </div>
                                 <div className='flex flex-row items-center'>
-                                    <FontAwesomeIcon icon={faEthereum} className='text-lg mr-2' />
-                                    <h2 className='font-medium text-lg'>{transaction.price} ETH</h2>
+                                    <FontAwesomeIcon icon={faEthereum} className='text-xl md:text-4xl mr-2' />
+                                    <h2 className='font-medium text-xl md:text-3xl'>{transaction.price} ETH</h2>
                                 </div>
                             </div>
                         ))}
