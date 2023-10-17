@@ -1,55 +1,51 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEthereum } from '@fortawesome/free-brands-svg-icons';
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { NavLink, useNavigate } from 'react-router-dom';
 import SearchBar from './searchbar';
-import axios from 'axios';
 
-const Header = () => {
-    const [isOpen, setisOpen] = useState(false);
+const Header = ({ isLoggedIn, userEmail, setIsLoggedIn, setUserEmail }) => {
+    const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
-    // If you intend to display user details, maintain them in state.
-    const [userData, setUserData] = useState(null);
 
     useEffect(() => {
-        const sessionID = localStorage.getItem('session_id');
-        if (sessionID) {
-            axios.get('http://127.0.0.1:8000/users/details/', {
-                headers: {
-                    'Authorization': `Bearer ${sessionID}`
-                }
-            }).then(response => {
-                setUserData(response.data);
-            }).catch(error => {
-                console.error("Error fetching user details:", error);
-            });
+        function updateLoginStatus() {
+            const email = localStorage.getItem("emailData");
+            if (email) {
+                setUserEmail(email);
+                setIsLoggedIn(true);
+            } else {
+                setUserEmail(null);
+                setIsLoggedIn(false);
+            }
         }
+
+        // this is an Event listener for local storage changes
+        window.addEventListener('storage', updateLoginStatus);
+
+        // Initial check
+        updateLoginStatus();
+
+        return () => {
+            window.removeEventListener('storage', updateLoginStatus);
+        };
     }, []);
 
-    const handleLogout = () => {
-        const sessionID = localStorage.getItem('session_id');
-        if (sessionID) {
-            axios.post('http://127.0.0.1:8000/users/logout/', { session_id: sessionID })
-                .then(response => {
-                    localStorage.removeItem('session_id');
-                    setUserData(null);
-                    navigate("/");
-                }).catch(err => {
-                    console.error("Error during logout:", err);
-                });
-        }
-    };
 
     let Links = [
         { name: 'Home', link: '/' },
-        { name: 'Upload', link: '/submit_product' },
+        { name: 'Products Page', link: '/productspage' } 
     ];
-
-    if (userData) {
-        Links.push({ name: 'Dashboard', link: '/dashboard' });
+    
+    
+    if (isLoggedIn) {
+        Links.push(
+            { name: 'Upload', link: '/upload' },
+            { name: 'Dashboard', link: '/dashboard' }
+        );
     }
-
+    
 
     let allPages = [
         ...Links,
@@ -61,19 +57,12 @@ const Header = () => {
     ];
 
     const performSearch = (query) => {
-        const matchedPage = allPages.find((page) =>
-            page.name.toLowerCase().includes(query.toLowerCase())
-        );
-
-        if (matchedPage) {
-            navigate(matchedPage.link);
-        } else {
-            console.log('Page not found');
-        }
+        navigate("/search_product", { state: { searchQuery: query } });
     };
+    
 
     return (
-        <div className="shadow-md w-full bg-primary-color fixed top-0 left-0">
+        <div className="shadow-md w-full bg-primary-color fixed top-0 left-0 z-10">
             <div className="p-4 md:flex justify-between items-center bg-primary-color">
                 <div className="flex items-center gap-1">
                     <h1 className="text-sm md:text-md lg:text-xl uppercase font-bold tracking-widest">
@@ -82,7 +71,7 @@ const Header = () => {
                 </div>
 
                 <div
-                    onClick={() => setisOpen(!isOpen)}
+                    onClick={() => setIsOpen(!isOpen)}
                     className="w-7 h-7 absolute right-3 top-4 cursor-pointer md:hidden"
                 >
                     {isOpen ? (
@@ -107,19 +96,28 @@ const Header = () => {
                     <li className="font-semibold my-7 mx-4 md:my-0 md:ml-8 tracking-wider">
                         <SearchBar onSearch={performSearch} />
                     </li>
-                    {userData && userData.username ? (  // Changed from 'user' to 'userData' and added a check for a specific property
-                        <button
-                            onClick={handleLogout}
-                            className="btn -my-2 py-1 px-2 md:ml-8 rounded-md border-2 border-black md:static tracking-wide font-semibold"
-                        >
-                            Logout
-                        </button>
+                    {isLoggedIn ? (
+                        <>
+                            <li>{userEmail}</li>
+                            <button
+                                onClick={() => {
+                                    localStorage.removeItem("emailData");
+                                    localStorage.removeItem("passwordData");
+                                    setIsLoggedIn(false);
+                                    setUserEmail(null);
+                                    navigate("/login"); // Navigates back to the login page
+                                }}
+                                className="btn -my-2 py-1 px-2 md:ml-8 rounded-md border-2 border-black md:static tracking-wide font-semibold"
+                            >
+                                Logout
+                            </button>
+                        </>
                     ) : (
                         <button
                             onClick={() => navigate("/login")}
                             className="btn -my-2 py-1 px-2 md:ml-8 rounded-md border-2 border-black md:static tracking-wide font-semibold"
                         >
-                            Login Here
+                            Login
                         </button>
                     )}
                 </ul>

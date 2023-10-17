@@ -1,29 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ProductCard from '../components/product-card';
-import productData from '../Dataset/data';
+import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 
 const SearchProduct = () => {
-  const [selectedFilter, setSelectedFilter] = useState("All");
+  const location = useLocation();
+  const searchQuery = location.state ? location.state.searchQuery.toLowerCase() : "";
 
-  const handleFilterChange = (filter) => {
-    setSelectedFilter(filter);
-  };
+  const [products, setProducts] = useState([]);
 
-  const filteredProducts = productData.filter(product => 
-    selectedFilter === "All" ? true : product.typeOfProduct === selectedFilter
-  );
+  useEffect(() => {
+    axios.get(`http://127.0.0.1:8000/search_products/?query=${searchQuery}`)
+      .then(response => {
+        setProducts(response.data);
+      })
+      .catch(error => {
+        console.error("Error fetching products:", error);
+      });
+  }, [searchQuery]);
 
   return (
     <div className="container mx-auto px-4">
-      <div className='flex flex-row flex-wrap justify-center md:justify-start m-4'>
-        <button onClick={() => handleFilterChange("All")} className='bg-primary-color w-full md:w-20 uppercase font-bold rounded-full p-2 mx-1 my-1 text-center'>All</button>
-        <button onClick={() => handleFilterChange("Art")} className='bg-primary-color w-full md:w-20 uppercase font-bold rounded-full p-2 mx-1 my-1 text-center'>Art</button>
-        <button onClick={() => handleFilterChange("Entertainment")} className='bg-primary-color w-full md:w-36 uppercase font-bold rounded-full p-2 mx-1 my-1 text-center'>Entertainment</button>
-        <button onClick={() => handleFilterChange("Games")} className='bg-primary-color w-full md:w-20 uppercase font-bold rounded-full p-2 mx-1 my-1 text-center'>Games</button>
-        <button onClick={() => handleFilterChange("Membership")} className='bg-primary-color w-full md:w-32 uppercase font-bold rounded-full p-2 mx-1 my-1 text-center'>Membership</button>
-      </div>
+      <h1 className="text-xl font-bold my-4 text-primary-color">Search Results for: "{searchQuery}"</h1>
       <div id='display_searched_product' className='flex flex-wrap justify-start'>
-        {filteredProducts.map(product => <ProductCard key={product.id} product={product} />)}
+        {products.length > 0 ? (
+          products.map(product => (
+            <ProductCard key={product.item_id} product={product} />
+          ))
+        ) : (
+          <h2 className="text-2xl text-red-500 font-bold mt-5 mx-auto">Product does not exist</h2>
+        )}
       </div>
     </div>
   );
