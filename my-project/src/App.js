@@ -10,7 +10,6 @@ import Header from './components/navbar'
 import Footer from './components/footer'
 import About from './pages/about.js'
 import Home from './pages/home.js'
-import Upload from './pages/submit_product.js'
 import Dashboard from './pages/dashboard.js'
 import Product from './pages/product.js'
 import Login from './pages/login.js'
@@ -33,7 +32,6 @@ function App() {
             <Route path="/" element={<Home isLoggedIn={isLoggedIn}/>} />
             <Route path="about" element={<About isLoggedIn={isLoggedIn}/>} />
             <Route path="dashboard" element={<Dashboard isLoggedIn={isLoggedIn} userId={userId} />} />
-            <Route path="upload" element={<Upload isLoggedIn={isLoggedIn}/>} />
             <Route path="product" element={<Product isLoggedIn={isLoggedIn} userId={userId} />} />
             <Route path="productspage" element={<ProductsPage isLoggedIn={isLoggedIn}/>} />
             <Route path="search_product" element={<SearchProduct isLoggedIn={isLoggedIn}/>} />

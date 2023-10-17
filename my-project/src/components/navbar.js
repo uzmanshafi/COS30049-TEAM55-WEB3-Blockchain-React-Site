@@ -41,7 +41,6 @@ const Header = ({ isLoggedIn, userEmail, setIsLoggedIn, setUserEmail }) => {
     
     if (isLoggedIn) {
         Links.push(
-            { name: 'Upload', link: '/upload' },
             { name: 'Dashboard', link: '/dashboard' }
         );
     }
@@ -52,7 +51,6 @@ const Header = ({ isLoggedIn, userEmail, setIsLoggedIn, setUserEmail }) => {
         { name: 'About', link: '/about' },
         { name: 'Product', link: '/product' },
         { name: 'Search Product', link: '/search_product' },
-        { name: 'Submit Product', link: '/submit_product' },
         { name: 'Dashboard', link: '/dashboard' },
     ];
 
@@ -98,7 +96,7 @@ const Header = ({ isLoggedIn, userEmail, setIsLoggedIn, setUserEmail }) => {
                     </li>
                     {isLoggedIn ? (
                         <>
-                            <li>{userEmail}</li>
+                            <li className='pb-6'>{userEmail}</li>
                             <button
                                 onClick={() => {
                                     localStorage.removeItem("emailData");

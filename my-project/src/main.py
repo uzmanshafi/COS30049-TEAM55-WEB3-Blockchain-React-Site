@@ -60,29 +60,7 @@ def close_db_cursor(cursor, connection):
     connection.close()
 
 
-# ENDPONT FOR STATS DONUTCHART
-@app.get("/getAssetCount/{user_id}/")
-async def get_category_counts(user_id: int):
-    connection, cursor = get_db_cursor()
-    try:
-        query = """
-        SELECT Products.category, COUNT(Products.item_id) as count
-        FROM Transactions
-        INNER JOIN Products ON Transactions.item_id = Products.item_id
-        WHERE Transactions.user_id = %s
-        GROUP BY Products.category
-        """
-        cursor.execute(query, (user_id,))
-        results = cursor.fetchall()
 
-        category_counts = {result['category']
-            : result['count'] for result in results}
-
-        return category_counts
-    except mysql.connector.Error as err:
-        raise HTTPException(status_code=500, detail=f"Database error: {err}")
-    finally:
-        close_db_cursor(cursor, connection)
 
 
 @app.post("/login/")
@@ -206,6 +184,30 @@ async def search_products(query: str = Query(..., description="Query string for 
         raise HTTPException(status_code=500, detail=f"Database error: {err}")
     finally:
         close_db_cursor(cursor, connection)
+        
+# ENDPONT FOR STATS DONUTCHART
+@app.get("/getAssetCount/{user_id}/")
+async def get_category_counts(user_id: int):
+    connection, cursor = get_db_cursor()
+    try:
+        query = """
+        SELECT Products.category, COUNT(Products.item_id) as count
+        FROM Transactions
+        INNER JOIN Products ON Transactions.item_id = Products.item_id
+        WHERE Transactions.user_id = %s
+        GROUP BY Products.category
+        """
+        cursor.execute(query, (user_id,))
+        results = cursor.fetchall()
+
+        category_counts = {result['category']
+            : result['count'] for result in results}
+
+        return category_counts
+    except mysql.connector.Error as err:
+        raise HTTPException(status_code=500, detail=f"Database error: {err}")
+    finally:
+        close_db_cursor(cursor, connection)
 
 
 @app.get("/suggest_products/")
@@ -247,8 +249,8 @@ async def get_user(user_id: int):
 async def deploy_contract():
     w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
     chain_id = 1337
-    my_address = "0x1b3092069D6FBafC7F94750D939E9e8BFf5165c6"
-    private_key = "0x207fa40a4a757c9cd6917fd18b2a12126b96418ffcbc81508e26ec46e0579757"
+    my_address = "0xDf0bC810FaF1738974326709957325fB5741B9c6"
+    private_key = "0x81b94fe73a4c92a88b6c97d610c5a74a8e612c3f4bd0d99c2d211199ec767f90"
 
     with open("../contracts/SmartContract.sol", "r") as file:
         smart_contract_file = file.read()
@@ -308,8 +310,8 @@ async def purchase_product(purchase: PurchaseItem):
     print(purchase)
     w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
     chain_id = 1337
-    my_address = "0x1b3092069D6FBafC7F94750D939E9e8BFf5165c6"
-    private_key = "0x207fa40a4a757c9cd6917fd18b2a12126b96418ffcbc81508e26ec46e0579757"
+    my_address = "0xDf0bC810FaF1738974326709957325fB5741B9c6"
+    private_key = "0x81b94fe73a4c92a88b6c97d610c5a74a8e612c3f4bd0d99c2d211199ec767f90"
 
     with open("compiled_code.json", "r") as file:
         compiled_sol = json.load(file)
@@ -384,7 +386,7 @@ async def update_user_balance(user_id: int):
             raise HTTPException(status_code=404, detail="User not found")
 
         # Gets the balance of the address from the Ethereum network
-        my_address = "0x1b3092069D6FBafC7F94750D939E9e8BFf5165c6"
+        my_address = "0xDf0bC810FaF1738974326709957325fB5741B9c6"
         balance_wei = w3.eth.get_balance(my_address)
         balance_eth = w3.from_wei(balance_wei, "ether")
 
