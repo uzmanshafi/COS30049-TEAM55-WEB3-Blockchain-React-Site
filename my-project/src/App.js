@@ -31,7 +31,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home isLoggedIn={isLoggedIn}/>} />
             <Route path="about" element={<About isLoggedIn={isLoggedIn}/>} />
-            <Route path="dashboard" element={<Dashboard isLoggedIn={isLoggedIn}/>} />
+            <Route path="dashboard" element={<Dashboard isLoggedIn={isLoggedIn} userId={userId} />} />
             <Route path="upload" element={<Upload isLoggedIn={isLoggedIn}/>} />
             <Route path="product" element={<Product isLoggedIn={isLoggedIn} userId={userId} />} />
             <Route path="productspage" element={<ProductsPage isLoggedIn={isLoggedIn}/>} />

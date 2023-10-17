@@ -9,6 +9,7 @@ const Product = ({ isLoggedIn, userId }) => {
     const navigate = useNavigate();
     const [productData, setProductData] = useState(location?.state?.product || {});
     const [contractAddress, setContractAddress] = useState(null);
+    
 
     
     useEffect(() => {

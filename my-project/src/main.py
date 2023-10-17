@@ -58,9 +58,28 @@ def close_db_cursor(cursor, connection):
     connection.close()
 
 
-@app.get("/")
-async def funcTest1():
-    return "Hello, this is fastAPI data"
+# ENDPONT FOR STATS DONUTCHART
+@app.get("/getAssetCount/{user_id}/")
+async def get_category_counts(user_id: int):
+    connection, cursor = get_db_cursor()
+    try:
+        query = """
+        SELECT Products.category, COUNT(Products.item_id) as count
+        FROM Transactions
+        INNER JOIN Products ON Transactions.item_id = Products.item_id
+        WHERE Transactions.user_id = %s
+        GROUP BY Products.category
+        """
+        cursor.execute(query, (user_id,))
+        results = cursor.fetchall()
+
+        category_counts = {result['category']: result['count'] for result in results}
+        
+        return category_counts
+    except mysql.connector.Error as err:
+        raise HTTPException(status_code=500, detail=f"Database error: {err}")
+    finally:
+        close_db_cursor(cursor, connection)
 
 
 @app.post("/login/")
@@ -149,12 +168,16 @@ async def get_product(item_id: int):
 @app.get("/transactions/{user_id}")
 async def get_transactions(user_id: int):
     connection, cursor = get_db_cursor()
-
     try:
-        cursor.execute("SELECT * FROM Transactions WHERE user_id=%s", (user_id,))
+        cursor.execute(""" 
+        SELECT t.*, p.product_name, p.price, p.image_path 
+        FROM Transactions t 
+        INNER JOIN Products p ON t.item_id = p.item_id
+        WHERE t.user_id=%s
+        """, (user_id,))
         transactions = cursor.fetchall()
     except mysql.connector.Error as err:
-        raise HTTPException(status_code=500, detail="Database error")
+        raise HTTPException(status_code=500, detail=f"Database error: {str(err)}")
     finally:
         close_db_cursor(cursor, connection)
 
@@ -164,17 +187,17 @@ async def get_transactions(user_id: int):
 @app.get("/user/{user_id}")
 async def get_user(user_id: int):
     connection, cursor = get_db_cursor()
-
     try:
         cursor.execute("SELECT * FROM Users WHERE user_id=%s", (user_id,))
         user = cursor.fetchone()
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found.")
     except mysql.connector.Error as err:
-        raise HTTPException(status_code=500, detail="Database error")
+        raise HTTPException(status_code=500, detail=f"Database error: {str(err)}")
     finally:
         close_db_cursor(cursor, connection)
 
     return user
-
 
 # BLOCKCHAIN RELATED CODE AND ENDPOINTS
 
@@ -182,8 +205,8 @@ async def get_user(user_id: int):
 async def deploy_contract():
     w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
     chain_id = 1337
-    my_address = "0x9BF1Ed3edb7B294D468B4e34D7404E6e10ed64c6"
-    private_key = "0xee0da644ed74743d71a27799592eb0895dd0bd443b1e0e117530f6249ebe40d6"
+    my_address = "0x1b3092069D6FBafC7F94750D939E9e8BFf5165c6"
+    private_key = "0x207fa40a4a757c9cd6917fd18b2a12126b96418ffcbc81508e26ec46e0579757"
 
     with open("../contracts/SmartContract.sol", "r") as file:
         smart_contract_file = file.read()
@@ -240,8 +263,8 @@ async def purchase_product(purchase: PurchaseItem):
     print(purchase)
     w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
     chain_id = 1337
-    my_address = "0x9BF1Ed3edb7B294D468B4e34D7404E6e10ed64c6"
-    private_key = "0xee0da644ed74743d71a27799592eb0895dd0bd443b1e0e117530f6249ebe40d6"
+    my_address = "0x1b3092069D6FBafC7F94750D939E9e8BFf5165c6"
+    private_key = "0x207fa40a4a757c9cd6917fd18b2a12126b96418ffcbc81508e26ec46e0579757"
 
     with open("compiled_code.json", "r") as file:
         compiled_sol = json.load(file)
@@ -297,6 +320,41 @@ async def check_contract_deployment():
         return {"isDeployed": False}
     except:
         return {"isDeployed": False}
+    
+@app.get("/updateUserBalance/{user_id}")
+async def update_user_balance(user_id: int):
+
+    w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
+    
+    connection, cursor = get_db_cursor()
+    try:
+        # Checks if the user exists
+        cursor.execute("SELECT user_id FROM Users WHERE user_id=%s", (user_id,))
+        result = cursor.fetchone()
+        if not result:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        # Gets the balance of the address from the Ethereum network
+        my_address = "0x1b3092069D6FBafC7F94750D939E9e8BFf5165c6"
+        balance_wei = w3.eth.get_balance(my_address)
+        balance_eth = w3.from_wei(balance_wei, "ether")
+
+        # Updates the balance in the database
+        cursor.execute("UPDATE Users SET balance=%s WHERE user_id=%s", (float(balance_eth), user_id))
+        connection.commit()
+        
+        return {"status": "success", "balance": balance_eth}
+
+    except mysql.connector.Error as err:
+        raise HTTPException(status_code=500, detail=f"Database error: {err}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error updating user balance: {e}")
+    finally:
+        close_db_cursor(cursor, connection)
+
+
+    
+    
 
 
 

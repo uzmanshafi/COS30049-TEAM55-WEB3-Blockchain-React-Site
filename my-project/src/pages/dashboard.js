@@ -1,44 +1,68 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEthereum } from '@fortawesome/free-brands-svg-icons'
-import { faClipboard, faTrash } from '@fortawesome/free-solid-svg-icons';
 import p1 from '../images/p1.png';
-import p2 from '../images/p2.png';
-import p3 from '../images/p3.png';
-import p4 from '../images/p4.png';
 import DonutChart from '../components/DonutChart';
 import axios from 'axios';
 
 const Dashboard = () => {
     const [user, setUser] = useState(null);
-    const user_id = localStorage.getItem('userId');
     const [transactions, setTransactions] = useState([]);
+    const user_id = localStorage.getItem('userId');  // Retrieves the user_id from localStorage
+    const initialCategoryData = {
+        'Gaming': 0,
+        'Music': 0,
+        'Art': 0,
+        'Software': 0
+    };
+
+    const [categoryData, setCategoryData] = useState(initialCategoryData);
+
 
     useEffect(() => {
-        const session_id = localStorage.getItem('session_id'); // Gets session_id from local storage
-
-        if (session_id && (!user || (user && user.email === "Loading..."))) {
-            axios.get(`http://127.0.0.1:8000/user/${user_id}/`, { headers: { "Authorization": `Bearer ${session_id}` } })
+        if (user_id) {
+            // Fetches user details
+            axios.get(`http://127.0.0.1:8000/user/${user_id}/`)
                 .then(response => {
                     setUser(response.data);
                 })
                 .catch(error => {
                     console.error("Error fetching user details:", error);
                 });
-        }
 
-        // Fetches user transactions
-        if (user && user.user_id) {
-            axios.get(`http://127.0.0.1:8000/transactions/${user.user_id}/`)
+            // Fetches user transactions
+            axios.get(`http://127.0.0.1:8000/transactions/${user_id}/`)
                 .then(response => {
                     setTransactions(response.data);
                 })
                 .catch(error => {
                     console.error("Error fetching transactions:", error);
                 });
-        }
 
-    }, [user]);
+            // Updates the user balance
+            axios.get(`http://127.0.0.1:8000/updateUserBalance/${user_id}/`)
+                .then(response => {
+                    if (response.data.status === 'success') {
+                        // Updates the balance in the frontend
+                        setUser(prevUser => ({ ...prevUser, balance: response.data.balance }));
+                    }
+                })
+                .catch(error => {
+                    console.error("Error updating and fetching balance:", error);
+                });
+
+            // Fetches user category data
+            axios.get(`http://127.0.0.1:8000/getAssetCount/${user_id}/`)
+                .then(response => {
+                    setCategoryData(response.data);
+                })
+                .catch(error => {
+                    console.error("Error fetching category counts:", error);
+                });
+
+
+        }
+    }, [user_id]);
 
     const [currentTab, setCurrentTab] = useState("Purchased");
 
@@ -61,40 +85,35 @@ const Dashboard = () => {
                             <FontAwesomeIcon icon={faEthereum} className='mr-2' />
                             {user ? `${user.balance} ETH` : "Loading..."}
                         </h2>
-
-                        <div className="flex flex-col mx-2 my-4">
-                            <button className="bg-secondary-color p-2 rounded-full font-semibold text-white shadow-md mb-2">Update Username</button>
-                            <button className="bg-indigo-700 p-2 rounded-full font-semibold text-white shadow-md mt-2">Update Password</button>
-                        </div>
                     </div>
                 </div>
 
-                {/* Dashboard */}
+                {/* Transactions */}
                 <div className="bg-primary-color w-full md:w-3/5 rounded-lg flex flex-col flex-grow p-2 md:p-8 mx-auto">
                     <div className="flex flex-row flex-wrap p-4 w-full">
                         <button onClick={() => setCurrentTab("Purchased")} className="bg-secondary-color mx-2 my-1 md:my-0 rounded-xl p-2 text-xs md:text-lg uppercase font-semibold text-white shadow-md">Purchased</button>
                         <button onClick={() => setCurrentTab("Stat")} className="bg-secondary-color mx-2 my-1 md:my-0 rounded-xl p-2 text-xs md:text-lg uppercase font-semibold text-white">Stats</button>
                     </div>
-                    <div id='purchasedTab' className="bg-accent-color flex-grow w-full rounded-lg mx-auto overflow-y-auto p-2 max-h-[calc(100%/5*5)] shadow-inner">
-
+                    <div
+                        id='purchasedTab'
+                        className="bg-accent-color flex-grow w-full rounded-lg mx-auto overflow-y-auto p-2 shadow-inner"
+                        style={{ maxHeight: "458px" }}
+                    >
                         {currentTab === "Purchased" && transactions.map((transaction, index) => (
-                            <div key={index} id='item-card' className='...'>
-                                <div className='...'>
-                                    <img src={transaction.image_path} alt="Item" className="..." />
+                            <div key={index} className='flex flex-row my-4 mx-2 bg-white p-4 rounded shadow-md items-center'>
+                                <img src={transaction.image_path} alt="Item" className="rounded-md w-2/12 object-cover mr-4" />
+                                <div className='flex flex-col flex-grow pr-4'>
+                                    <h2 className='font-bold text-lg mb-2'>{transaction.product_name}</h2>
+                                    <h2 className='font-medium text-sm italic mb-1'>{new Date(transaction.purchase_date).toLocaleDateString()}</h2>
+                                    <h2 className='text-xs text-gray-500 truncate'>{transaction.transaction_hash}</h2>
                                 </div>
-                                <div id='item-info' className='...'>
-                                    <h2 className='...'>{transaction.product_name}</h2>
-                                    <h2 className='...'>{transaction.purchase_date}</h2>
-                                    <h2 className='...'>{transaction.transaction_hash}</h2>
-                                </div>
-                                <div className='...'>
-                                    <FontAwesomeIcon icon={faEthereum} className='...' />
-                                    <h2 className='...'>{transaction.price} ETH</h2>
+                                <div className='flex flex-row items-center'>
+                                    <FontAwesomeIcon icon={faEthereum} className='text-lg mr-2' />
+                                    <h2 className='font-medium text-lg'>{transaction.price} ETH</h2>
                                 </div>
                             </div>
                         ))}
-                        {currentTab === "Stat" && <div className="flex justify-center items-center "><DonutChart /></div>}
-
+                        {currentTab === "Stat" && <div className="flex justify-center items-center "><DonutChart data={categoryData} /></div>}
                     </div>
                 </div>
             </div>
