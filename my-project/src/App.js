@@ -1,7 +1,10 @@
 import logo from './logo.svg';
 import './App.css';
-import './index.css'
-import { BrowserRouter, Routes, Route, Link, NavLink } from 'react-router-dom'
+import './index.css';
+import { BrowserRouter, Routes, Route, Link, NavLink } from 'react-router-dom';
+import { useState } from 'react';
+import { ContractProvider } from './components/ContractContext.js';
+
 //pages
 import Header from './components/navbar'
 import Footer from './components/footer'
@@ -11,31 +14,38 @@ import Upload from './pages/submit_product.js'
 import Dashboard from './pages/dashboard.js'
 import Product from './pages/product.js'
 import Login from './pages/login.js'
-import Register from './pages/register.js'
-//icons
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEthereum } from '@fortawesome/free-brands-svg-icons'
-import { faWallet, faBars , faXmark} from '@fortawesome/free-solid-svg-icons'
+import FetchData from './components/FetchData.js'
+import ProductsPage from './pages/productspage.js';
+import SearchProduct from './pages/search_product.js';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
+  const [userId, setUserId] = useState(localStorage.getItem('userId') || null); // Initializes with local storage value
+
   return (
-    <BrowserRouter>
+    <ContractProvider>
+      <BrowserRouter>
       <main className="min-h-screen flex flex-col">
-        <Header />
+        <Header isLoggedIn={isLoggedIn} userEmail={userEmail} setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} />
         <div className="Content bg-background-color flex-grow w-full px-10 py-20">
           <Routes>
-            <Route index element={<Home />} />
-            <Route path="about" element={<About />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="upload" element={<Upload />} />
-            <Route path="product" element={<Product />} />
-            <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
+            <Route path="/" element={<Home isLoggedIn={isLoggedIn}/>} />
+            <Route path="about" element={<About isLoggedIn={isLoggedIn}/>} />
+            <Route path="dashboard" element={<Dashboard isLoggedIn={isLoggedIn} userId={userId} />} />
+            <Route path="upload" element={<Upload isLoggedIn={isLoggedIn}/>} />
+            <Route path="product" element={<Product isLoggedIn={isLoggedIn} userId={userId} />} />
+            <Route path="productspage" element={<ProductsPage isLoggedIn={isLoggedIn}/>} />
+            <Route path="search_product" element={<SearchProduct isLoggedIn={isLoggedIn}/>} />
+            <Route path="login" element={<Login setIsLoggedIn={setIsLoggedIn} setUserEmail={setUserEmail} setUserId={setUserId} />} />
+            <Route path="fetchdata" element={<FetchData />} />
           </Routes>
         </div>
         <Footer />
       </main>
     </BrowserRouter>
+    </ContractProvider>
+    
   );
 }
 
